@@ -1,0 +1,8 @@
+{
+  "name": "LingScript",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular",
+  "id": "3ae57ebc"
+}
