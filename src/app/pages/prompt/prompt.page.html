@@ -1,0 +1,8 @@
+<ion-text class="ion-text-center" style="margin-top: 4em;"><h1>{{ prompt }}</h1></ion-text>
+
+<ion-item>
+  <ion-input [(ngModel)]="inputText"></ion-input>
+  <ion-button *ngIf="isValid()" (click)="next()">Next</ion-button>
+</ion-item>
+
+
