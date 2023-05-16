@@ -9,7 +9,9 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "lint": "ng lint"
+    "lint": "ng lint",
+    "gh-build": "ionic build --prod -- --base-href https://sahajjain01.github.io/ling-script/",
+    "gh-deploy": "npx angular-cli-ghpages --dir=www"
   },
   "private": true,
   "dependencies": {
@@ -27,6 +29,7 @@
     "@capacitor/keyboard": "5.0.2",
     "@capacitor/status-bar": "5.0.2",
     "@ionic/angular": "^7.0.0",
+    "angular-cli-ghpages": "^1.0.6",
     "ionicons": "^7.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
