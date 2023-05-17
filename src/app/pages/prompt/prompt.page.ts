@@ -38,6 +38,7 @@ export class PromptPage {
     { content: "소녀", answer: "sonyeo"},
     { content: "그녀는", answer: "geunyeoneun"},
     { content: "입니다", answer: "imnida"},
+    { content: "소년", answer: "sonyeon"}, 
     { content: "이십오", answer: "isibo"},
     { content: "스물다섯", answer: "seumuldaseot"},
     { content: "나는", answer: "naneun"},
