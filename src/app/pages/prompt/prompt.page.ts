@@ -21,6 +21,7 @@ export class PromptPage {
   answer = '';
   langId = 1;
   constructor(private http: HttpClient) {
+    this.prompts = this.shuffle(this.prompts);
     this.getPrompt();
   }
   // getPrompt() {
@@ -31,7 +32,7 @@ export class PromptPage {
   // }
   prompts: Prompt[] = [
     { content: "여자", answer: "yeoja"},
-    { content: "저는", answer: "jeoneun"},
+    { content: "저는", answer: "joneun"},
     { content: "남자", answer: "namja"},
     { content: "당신은", answer: "dangsineun"},
     { content: "소녀", answer: "sonyeo"},
@@ -40,18 +41,18 @@ export class PromptPage {
     { content: "이십오", answer: "isibo"},
     { content: "스물다섯", answer: "seumuldaseot"},
     { content: "나는", answer: "naneun"},
-    { content: "살입니다", answer: "salimnida"},
+    { content: "살입니다", answer: "sarimnida"},
     { content: "십이", answer: "sibi"},
     { content: "열둘", answer: "yeoldul"},
     { content: "십사", answer: "sipsa"},
-    { content: "열넷", answer: "yeolnet"},
+    { content: "열넷", answer: "yeollet"},
     { content: "소녀는", answer: "sonyeoneun"},
-    { content: "사십", answer: "sasib"},
+    { content: "사십", answer: "sasip"},
     { content: "마흔", answer: "maheun"},
-    { content: "미국", answer: "migug"},
+    { content: "미국", answer: "miguk"},
     { content: "왔습니다", answer: "watseumnida"},
     { content: "독일", answer: "dogil"},
-    { content: "중국", answer: "junggug"},
+    { content: "중국", answer: "jungguk"},
     { content: "일본", answer: "ilbon"},
     { content: "영어", answer: "yeongeo"},
     { content: "합니다", answer: "hamnida"},
@@ -72,7 +73,7 @@ export class PromptPage {
     { content: "신문", answer: "sinmun"},
     { content: "가지고 있다", answer: "gajigo itda"},
     { content: "배우다", answer: "baeuda"},
-    { content: "먹다", answer: "meogda"},
+    { content: "먹다", answer: "meokda"},
     { content: "읽다", answer: "ikda"},
     { content: "마시다", answer: "masida"},
     { content: "사다", answer: "sada"},
@@ -82,6 +83,25 @@ export class PromptPage {
     { content: "잡지", answer: "japji"},
     { content: "물", answer: "mul"}
   ]
+
+  shuffle(array: Prompt[]) {
+    let currentIndex = array.length,  randomIndex;
+  
+    // While there remain elements to shuffle.
+    while (currentIndex != 0) {
+  
+      // Pick a remaining element.
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+  
+      // And swap it with the current element.
+      [array[currentIndex], array[randomIndex]] = [
+        array[randomIndex], array[currentIndex]];
+    }
+  
+    return array;
+  }
+  
   getPrompt() {
     this.prompt = this.prompts[this.promptIndex-1].content;
     this.answer = this.prompts[this.promptIndex-1].answer;
