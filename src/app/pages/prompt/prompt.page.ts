@@ -17,7 +17,7 @@ type Prompt = { content: string; answer: string };
 })
 export class PromptPage {
   inputText = '';
-  promptIndex = 28;
+  promptIndex = 1;
   prompt = '';
   answer = '';
   langId = 1;
