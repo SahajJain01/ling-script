@@ -1,7 +1,10 @@
-<ion-content>
+<ion-content *ngIf="promptIndex <= prompts.length">
   <h1 class="ion-text-center">{{ prompt }}</h1>
   <ion-item>
     <ion-input placeholder="Type your answer..." [(ngModel)]="inputText"></ion-input>
     <ion-button *ngIf="isValid()" (click)="next()">Next</ion-button>
   </ion-item>
+</ion-content>
+<ion-content *ngIf="promptIndex > prompts.length">
+  <h1 class="ion-text-center">Completed!</h1>
 </ion-content>
