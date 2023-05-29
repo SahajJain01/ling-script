@@ -1,20 +1,12 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>LingScript</ion-title>
+  </ion-toolbar>
+</ion-header>
 <ion-content>
-  <ion-grid>
-    <ion-row>
-      <ion-col>
-        <ion-card routerLink="prompt/1">
-          <ion-card-header>
-            <ion-card-title class="ion-text-center">Unit 1</ion-card-title>
-          </ion-card-header>
-        </ion-card>
-      </ion-col>
-      <ion-col>
-        <ion-card routerLink="prompt/2">
-          <ion-card-header>
-            <ion-card-title class="ion-text-center">Unit 2</ion-card-title>
-          </ion-card-header>
-        </ion-card>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+  <ion-card *ngFor="let lang of langs" [routerLink]="['/lang', lang.id]">
+    <ion-card-header>
+      <ion-card-title class="ion-text-center">{{ lang.name }}</ion-card-title>
+    </ion-card-header>
+  </ion-card>
 </ion-content>

@@ -1,7 +1,8 @@
 import { Routes } from '@angular/router';
 
-import { PromptPage } from '@pages/prompt/prompt.page'
-import { HomePage } from '@pages/home/home.page'
+import { HomePage } from '@pages';
+import { LangPage } from '@pages';
+import { UnitPage } from '@pages';
 
 export const routes: Routes = [
   {
@@ -9,7 +10,19 @@ export const routes: Routes = [
     component: HomePage
   },
   {
-    path: 'prompt/:unit',
-    component: PromptPage
+    path: 'home',
+    redirectTo: '',
+  },
+  {
+    path: 'lang/:id',
+    component: LangPage
+  },
+  {
+    path: 'unit/:id',
+    component: UnitPage
+  },
+  {
+    path: '**',
+    redirectTo: '',
   },
 ];
