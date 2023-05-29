@@ -124,5 +124,7 @@ export class UnitPage {
           this.getPrompts();
         });
     }
+    this.newPrompt.answer = '';
+    this.newPrompt.content = '';
   }
 }

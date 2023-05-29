@@ -55,5 +55,6 @@ export class LangPage {
           this.getUnits();
         });
     }
+    this.newUnitName = '';
   }
 }
