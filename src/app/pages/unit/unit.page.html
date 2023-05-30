@@ -1,5 +1,13 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ reverseMode ? 'Roman to Script' : 'Script to Roman' }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-toggle class="ion-padding" [(ngModel)]="reverseMode"></ion-toggle>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
 <ion-content *ngIf="promptIndex < prompts.length">
-  <h1 class="ion-text-center">{{ prompt }}</h1>
+  <h1 class="ion-text-center">{{ reverseMode ? answer : prompt }}</h1>
   <ion-item>
     <ion-input placeholder="Type your answer..." [(ngModel)]="inputText"></ion-input>
     <ion-button (click)="submit()">Submit</ion-button>

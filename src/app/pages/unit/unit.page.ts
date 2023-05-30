@@ -31,6 +31,7 @@ export class UnitPage {
   prompt = '';
   answer = '';
   inputText = '';
+  reverseMode = false;
 
   constructor(
     private http: HttpClient,
@@ -93,7 +94,7 @@ export class UnitPage {
   }
 
   isValid() {
-    return this.answer == this.inputText;
+    return this.reverseMode ? this.prompt == this.inputText : this.answer == this.inputText;
   }
 
   next() {
