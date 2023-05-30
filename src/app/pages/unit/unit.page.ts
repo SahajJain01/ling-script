@@ -94,7 +94,9 @@ export class UnitPage {
   }
 
   isValid() {
-    return this.reverseMode ? this.prompt == this.inputText : this.answer == this.inputText;
+    return this.reverseMode
+      ? this.prompt == this.inputText
+      : this.answer == this.inputText;
   }
 
   next() {
