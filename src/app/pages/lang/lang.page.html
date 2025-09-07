@@ -4,11 +4,13 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-    <ion-card *ngFor="let unit of units" [routerLink]="['/unit', unit.id]">
-        <ion-card-header>
-          <ion-card-title class="ion-text-center">{{ unit.name }}</ion-card-title>
-        </ion-card-header>
+  <div class="cards-grid">
+    <ion-card *ngFor="let unit of units; trackBy: trackByUnitId" [routerLink]="['/unit', unit.id]">
+      <ion-card-header>
+        <ion-card-title class="ion-text-center">{{ unit.name }}</ion-card-title>
+      </ion-card-header>
     </ion-card>
+  </div>
 </ion-content>
 <ion-fab slot="fixed" vertical="bottom" horizontal="end">
   <ion-fab-button id="open-modal">

@@ -1,6 +1,15 @@
 // Karma configuration file, see link for more information
 // https://karma-runner.github.io/1.0/config/configuration-file.html
 
+// Prefer headless Chrome via Puppeteer if available
+try {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const puppeteer = require('puppeteer');
+  process.env.CHROME_BIN = puppeteer.executablePath();
+} catch (e) {
+  // Puppeteer not installed or failed to resolve; Karma will fall back to system Chrome
+}
+
 module.exports = function (config) {
   config.set({
     basePath: '',
@@ -12,6 +21,7 @@ module.exports = function (config) {
       require('karma-coverage'),
       require('@angular-devkit/build-angular/plugins/karma')
     ],
+    proxies: {},
     client: {
       jasmine: {
         // you can add configuration options for Jasmine here
@@ -37,7 +47,7 @@ module.exports = function (config) {
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
-    browsers: ['Chrome'],
+    browsers: ['ChromeHeadless'],
     singleRun: false,
     restartOnFileChange: true
   });

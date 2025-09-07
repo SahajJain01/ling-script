@@ -1,0 +1,20 @@
+.unit-container {
+  max-width: 56rem; /* ~896px */
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.unit-prompt {
+  margin: 1rem 0 1.25rem;
+}
+
+.unit-input {
+  --padding-start: 0;
+  --padding-end: 0;
+}
+
+@media (min-width: 64rem) {
+  .unit-prompt {
+    font-size: 2.25rem;
+  }
+}

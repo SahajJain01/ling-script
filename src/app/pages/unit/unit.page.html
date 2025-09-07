@@ -5,17 +5,21 @@
       <ion-toggle class="ion-padding" [(ngModel)]="reverseMode"></ion-toggle>
     </ion-buttons>
   </ion-toolbar>
-</ion-header>
-<ion-content *ngIf="promptIndex < prompts.length">
-  <h1 class="ion-text-center">{{ reverseMode ? answer : prompt }}</h1>
-  <ion-item>
-    <ion-input placeholder="Type your answer..." [(ngModel)]="inputText"></ion-input>
-    <ion-button (click)="submit()">Submit</ion-button>
-  </ion-item>
-</ion-content>
-<ion-content *ngIf="promptIndex >= prompts.length">
-  <h1 class="ion-text-center">Completed!</h1>
-  <ion-button [routerLink]="['/home']">Home</ion-button>
+  </ion-header>
+<ion-content>
+  <div class="unit-container">
+    <ng-container *ngIf="promptIndex < prompts.length; else completed">
+      <h1 class="unit-prompt ion-text-center">{{ reverseMode ? answer : prompt }}</h1>
+      <ion-item class="unit-input">
+        <ion-input placeholder="Type your answer..." [(ngModel)]="inputText"></ion-input>
+        <ion-button (click)="submit()" [disabled]="!inputText">Submit</ion-button>
+      </ion-item>
+    </ng-container>
+    <ng-template #completed>
+      <h1 class="ion-text-center">Completed!</h1>
+      <ion-button [routerLink]="['/home']">Home</ion-button>
+    </ng-template>
+  </div>
 </ion-content>
 <ion-fab slot="fixed" vertical="bottom" horizontal="end">
   <ion-fab-button id="open-modal">

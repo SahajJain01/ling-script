@@ -44,11 +44,11 @@ export class UnitPage {
     });
   }
 
-  shuffle(array: Prompt[]) {
+  shuffle(array: Prompt[]): Prompt[] {
     let currentIndex = array.length,
-      randomIndex;
+      randomIndex: number | undefined;
     // While there remain elements to shuffle.
-    while (currentIndex != 0) {
+    while (currentIndex !== 0) {
       // Pick a remaining element.
       randomIndex = Math.floor(Math.random() * currentIndex);
       currentIndex--;
@@ -61,22 +61,25 @@ export class UnitPage {
     return array;
   }
 
-  getPrompts() {
+  getPrompts(): void {
     this.promptIndex = -1;
     this.http
       .get<Prompt[]>(`${environment.apiUrl}/prompts/${this.unitId}`)
-      .subscribe((data) => {
-        this.prompts = this.shuffle(data);
-        this.next();
+      .subscribe({
+        next: (data) => {
+          this.prompts = this.shuffle(data);
+          this.next();
+        },
+        error: () => this.presentNetworkError('Failed to load prompts')
       });
   }
 
-  loadPrompt() {
+  loadPrompt(): void {
     this.prompt = this.prompts[this.promptIndex]?.content;
     this.answer = this.prompts[this.promptIndex]?.answer;
   }
 
-  submit() {
+  submit(): void {
     if (this.isValid()) {
       this.next();
     } else {
@@ -84,7 +87,7 @@ export class UnitPage {
     }
   }
 
-  async showError() {
+  async showError(): Promise<void> {
     const alert = await this.alertController.create({
       header: 'Wrong Answer',
       message: 'Please try again!',
@@ -93,27 +96,27 @@ export class UnitPage {
     await alert.present();
   }
 
-  isValid() {
+  isValid(): boolean {
     return this.reverseMode
-      ? this.prompt == this.inputText
-      : this.answer == this.inputText;
+      ? this.prompt === this.inputText
+      : this.answer === this.inputText;
   }
 
-  next() {
+  next(): void {
     this.promptIndex++;
     this.inputText = '';
     this.loadPrompt();
   }
 
-  cancel() {
+  cancel(): void {
     this.modal?.dismiss(null, 'cancel');
   }
 
-  confirm() {
+  confirm(): void {
     this.modal?.dismiss(this.newPrompt, 'confirm');
   }
 
-  onWillDismiss(event: Event) {
+  onWillDismiss(event: Event): void {
     const ev = event as CustomEvent<OverlayEventDetail<Prompt>>;
     if (ev.detail.role === 'confirm') {
       this.http
@@ -122,12 +125,23 @@ export class UnitPage {
           content: ev.detail.data?.content,
           answer: ev.detail.data?.answer,
         })
-        .subscribe((data) => {
-          console.log(data);
-          this.getPrompts();
+        .subscribe({
+          next: () => {
+            this.getPrompts();
+          },
+          error: () => this.presentNetworkError('Failed to create prompt')
         });
     }
     this.newPrompt.answer = '';
     this.newPrompt.content = '';
+  }
+
+  private async presentNetworkError(message: string): Promise<void> {
+    const alert = await this.alertController.create({
+      header: 'Error',
+      message,
+      buttons: ['OK'],
+    });
+    await alert.present();
   }
 }

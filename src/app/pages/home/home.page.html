@@ -4,9 +4,11 @@
   </ion-toolbar>
 </ion-header>
 <ion-content>
-  <ion-card *ngFor="let lang of langs" [routerLink]="['/lang', lang.id]">
-    <ion-card-header>
-      <ion-card-title class="ion-text-center">{{ lang.name }}</ion-card-title>
-    </ion-card-header>
-  </ion-card>
+  <div class="cards-grid">
+    <ion-card *ngFor="let lang of langs; trackBy: trackByLangId" [routerLink]="['/lang', lang.id]">
+      <ion-card-header>
+        <ion-card-title class="ion-text-center">{{ lang.name }}</ion-card-title>
+      </ion-card-header>
+    </ion-card>
+  </div>
 </ion-content>
