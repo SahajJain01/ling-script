@@ -18,6 +18,8 @@ RUN npm install --no-audit --no-fund
 FROM deps AS builder
 WORKDIR /app
 COPY . .
+# Ensure optional public dir exists so later COPY does not fail
+RUN mkdir -p /app/public
 # Generate Prisma client and build Next (standalone)
 RUN npx prisma generate
 RUN npm run build
