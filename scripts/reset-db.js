@@ -21,6 +21,11 @@ function run(cmd) {
 function main() {
   const dbFile = resolveDbFile();
   if (dbFile) {
+    const dir = path.dirname(dbFile);
+    if (!fs.existsSync(dir)) {
+      console.log(`Creating data directory: ${dir}`);
+      fs.mkdirSync(dir, { recursive: true });
+    }
     if (fs.existsSync(dbFile)) {
       console.log(`Removing existing DB file: ${dbFile}`);
       try {

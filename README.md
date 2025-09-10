@@ -6,10 +6,10 @@ Minimal, mobile‑first language practice. Built for speed, clarity, and a delig
 
 <br/>
 
-<img alt="Next.js" src="https://img.shields.io/badge/Next.js-14-000000?logo=nextdotjs&logoColor=white&style=for-the-badge" />
-<img alt="React" src="https://img.shields.io/badge/React-18-087ea4?logo=react&logoColor=white&style=for-the-badge" />
+<img alt="Next.js" src="https://img.shields.io/badge/Next.js-15-000000?logo=nextdotjs&logoColor=white&style=for-the-badge" />
+<img alt="React" src="https://img.shields.io/badge/React-19-087ea4?logo=react&logoColor=white&style=for-the-badge" />
 <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white&style=for-the-badge" />
-<img alt="Prisma" src="https://img.shields.io/badge/Prisma-5-2D3748?logo=prisma&logoColor=white&style=for-the-badge" />
+<img alt="Prisma" src="https://img.shields.io/badge/Prisma-6-2D3748?logo=prisma&logoColor=white&style=for-the-badge" />
 <img alt="SQLite" src="https://img.shields.io/badge/SQLite-3-003B57?logo=sqlite&logoColor=white&style=for-the-badge" />
 <img alt="Bun" src="https://img.shields.io/badge/Bun-%F0%9F%8D%90-000000?logo=bun&logoColor=white&style=for-the-badge" />
 <img alt="Node.js" src="https://img.shields.io/badge/Node.js-20-5FA04E?logo=node.js&logoColor=white&style=for-the-badge" />
@@ -32,8 +32,8 @@ Minimal, mobile‑first language practice. Built for speed, clarity, and a delig
 
 ## Built With
 
-- Next.js 14, React 18, TypeScript 5
-- Prisma 5 (SQLite), Node.js 20
+- Next.js 15, React 19, TypeScript 5
+- Prisma 6 (SQLite), Node.js 20
 - Bun (dev ergonomics, `bunx` for Prisma)
 - Vanilla CSS (no framework) tuned for touch + desktop
 
@@ -105,7 +105,7 @@ Run with a bind mount to persist the SQLite file on the host:
 # Linux/Mac
 docker run --name ling-next -p 3000:3000 \
   -v "$(pwd)/data:/app/data" \
-  -e DATABASE_URL="file:../data/ling.db" \
+  -e DATABASE_URL="file:/app/data/ling.db" \
   ling-script-next
 ```
 
@@ -113,7 +113,7 @@ docker run --name ling-next -p 3000:3000 \
 # Windows PowerShell
 docker run --name ling-next -p 3000:3000 `
   -v ${PWD}\data:/app/data `
-  -e DATABASE_URL="file:../data/ling.db" `
+  -e DATABASE_URL="file:/app/data/ling.db" `
   ling-script-next
 ```
 
@@ -121,6 +121,7 @@ Notes:
 
 - SQLite lives at `/app/data/ling.db` inside the container; no external DB needed
 - You can change the filename/location by adjusting `DATABASE_URL`
+- If you mount a host folder to `/app/data`, ensure it is writable by the container user. On Linux: `sudo chown -R 1000:1000 ./data`
 
 ## Project Structure
 

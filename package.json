@@ -3,32 +3,38 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "bunx prisma generate && next dev",
+    "dev": "bun run ensure-data-dir && bunx prisma generate && next dev",
     "build": "prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
+    "lint:fix": "next lint --fix",
     "db:generate": "bunx prisma generate",
     "db:push": "prisma db push --skip-generate",
     "db:migrate": "prisma migrate deploy",
     "db:seed": "bun prisma/seed.js",
-    "db:reset": "bun scripts/reset-db.js"
+    "db:reset": "bun scripts/reset-db.js",
+    "ensure-data-dir": "bun scripts/ensure-data-dir.js"
   },
   "dependencies": {
-    "@prisma/client": "5.18.0",
-    "next": "14.2.6",
-    "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "@prisma/client": "6.16.0",
+    "next": "15.5.2",
+    "react": "19.1.1",
+    "react-dom": "19.1.1"
   },
   "devDependencies": {
-    "@types/node": "20.14.12",
-    "@types/react": "18.3.3",
-    "@types/react-dom": "18.3.0",
-    "eslint": "8.57.0",
-    "eslint-config-next": "14.2.6",
-    "prisma": "5.18.0",
-    "typescript": "5.5.4"
+    "@types/node": "24.3.1",
+    "@types/react": "19.1.12",
+    "@types/react-dom": "19.1.9",
+    "@typescript-eslint/eslint-plugin": "8.43.0",
+    "@typescript-eslint/parser": "8.43.0",
+    "eslint": "9.35.0",
+    "eslint-config-next": "15.5.2",
+    "prisma": "6.16.0",
+    "typescript": "5.9.2"
   },
-  "prisma": {
-    "seed": "bun prisma/seed.js"
-  }
+  "engines": {
+    "node": ">=20.10.0",
+    "bun": ">=1.0.0"
+  },
+  "packageManager": "bun@1.2.21"
 }
