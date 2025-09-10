@@ -6,6 +6,7 @@ Minimal, mobile‑first language practice. Built for speed, clarity, and a delig
 
 <br/>
 
+<a href="https://lingscript.sahajjain.com/"><img alt="Live" src="https://img.shields.io/badge/Live-lingscript.sahajjain.com-2ea44f?style=for-the-badge" /></a>
 <img alt="Next.js" src="https://img.shields.io/badge/Next.js-15-000000?logo=nextdotjs&logoColor=white&style=for-the-badge" />
 <img alt="React" src="https://img.shields.io/badge/React-19-087ea4?logo=react&logoColor=white&style=for-the-badge" />
 <img alt="TypeScript" src="https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white&style=for-the-badge" />
