@@ -44,11 +44,9 @@ COPY --from=builder /app/.next/static ./.next/static
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/prisma ./prisma
 
-# Minimal Prisma runtime + CLI so we can `db push` on start
-COPY --from=deps /app/node_modules/.prisma ./node_modules/.prisma
-COPY --from=deps /app/node_modules/@prisma ./node_modules/@prisma
-COPY --from=deps /app/node_modules/prisma ./node_modules/prisma
-COPY --from=deps /app/node_modules/@prisma/client ./node_modules/@prisma/client
+# Bring the full node_modules from deps to satisfy Prisma CLI runtime deps
+# (e.g., @prisma/config -> effect, c12, empathic, deepmerge-ts)
+COPY --from=deps /app/node_modules ./node_modules
 
 # Ensure data dir exists for SQLite file and drop privileges
 RUN mkdir -p /app/data \
