@@ -39,7 +39,7 @@ RUN apt-get update -y \
     && rm -rf /var/lib/apt/lists/*
 
 # App artifacts
-COPY --from=builder /app/.next/standalone ./.next/standalone
+COPY --from=builder /app/.next/standalone ./
 COPY --from=builder /app/.next/static ./.next/static
 COPY --from=builder /app/public ./public
 COPY --from=builder /app/prisma ./prisma
@@ -57,7 +57,7 @@ USER bun
 EXPOSE 3000
 
 # Generate Prisma client, apply DB schema, seed idempotently, then start Next standalone server
-CMD ["sh", "-lc", "bunx prisma generate --schema=./prisma/schema.prisma && bunx prisma db push --skip-generate --schema=./prisma/schema.prisma && bun prisma/seed.js && bun ./.next/standalone/server.js"]
+CMD ["sh", "-lc", "bunx prisma generate --schema=./prisma/schema.prisma && bunx prisma db push --skip-generate --schema=./prisma/schema.prisma && bun prisma/seed.js && bun ./server.js"]
 
 # Basic healthcheck against the built-in health route
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
