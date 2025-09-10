@@ -8,15 +8,12 @@ export default async function UnitPage({ params }: { params: { id: string } }) {
 
   const unit = await prisma.unit.findUnique({
     where: { id },
-    include: { lang: true },
+    select: { id: true },
   });
   if (!unit) notFound();
 
   return (
-    <section>
-      <a href={`/lang/${unit.langId}`}>← {unit.lang.name}</a>
-      <h2>Unit: {unit.name}</h2>
-      <PracticeClient unitId={id} />
-    </section>
+    <PracticeClient unitId={id} />
   );
 }
+

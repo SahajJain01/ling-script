@@ -1,6 +1,8 @@
 'use client';
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useToast } from '@/components/ToastProvider';
+import Feedback from '@/components/Feedback';
 
 type Prompt = { content: string; answer: string };
 
@@ -12,8 +14,12 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
   const [prompt, setPrompt] = useState('');
   const [answer, setAnswer] = useState('');
   const [inputText, setInputText] = useState('');
-  // Alternate direction each prompt for minimal UI: even -> Script→Roman, odd -> Roman→Script
+  // Alternate direction each prompt: even -> Script->Roman, odd -> Roman->Script
   const [done, setDone] = useState(false);
+  const [invalid, setInvalid] = useState(false);
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  const toast = useToast();
+  const [showFeedback, setShowFeedback] = useState<null | 'success' | 'error'>(null);
 
   const shuffle = useCallback((array: Prompt[]) => {
     const arr = array.slice();
@@ -76,9 +82,13 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
 
   const onSubmit = useCallback(() => {
     if (isValid()) {
-      next();
+      setShowFeedback('success');
+      setTimeout(() => { setShowFeedback(null); next(); }, 600);
     } else {
-      alert('Wrong answer. Please try again!');
+      setInvalid(true);
+      setShowFeedback('error');
+      setTimeout(() => { setShowFeedback(null); setInvalid(false); }, 500);
+      if (inputRef.current) inputRef.current.focus();
     }
   }, [isValid, next]);
 
@@ -103,11 +113,11 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
       setNewAnswer('');
       await getPrompts();
     } catch (e: any) {
-      alert(e?.message || 'Failed to create prompt');
+      toast.error(e?.message || 'Failed to create prompt');
     } finally {
       setCreating(false);
     }
-  }, [getPrompts, newAnswer, newContent, unitId]);
+  }, [getPrompts, newAnswer, newContent, unitId, toast]);
 
   if (loading) return <div className="screen"><div className="center-panel"><p className="muted">Loading prompts…</p></div></div>;
   if (error) return <div className="screen"><div className="center-panel"><p className="muted" style={{ color: 'crimson' }}>{error}</p></div></div>;
@@ -119,9 +129,9 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
         </div>
         <div className="bottom-bar">
           <div className="bottom-inner">
-            <input className="input input--lg" placeholder="Script (e.g., こんにちは)" value={newContent} onChange={(e) => setNewContent(e.target.value)} />
+            <input className="input input--lg" placeholder="Script (native)" value={newContent} onChange={(e) => setNewContent(e.target.value)} />
             <button className="button button--ghost button--lg" disabled>+ Prompt</button>
-            <input className="input input--lg" placeholder="Roman (e.g., konnichiwa)" value={newAnswer} onChange={(e) => setNewAnswer(e.target.value)} />
+            <input className="input input--lg" placeholder="Roman (latin)" value={newAnswer} onChange={(e) => setNewAnswer(e.target.value)} />
             <button className="button button--primary button--lg" disabled={creating || !newContent || !newAnswer} onClick={addPrompt}>{creating ? 'Adding…' : 'Add'}</button>
           </div>
         </div>
@@ -131,6 +141,9 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
 
   return (
     <div className="screen">
+      <div className="progress progress--header" aria-hidden>
+        {Math.min(promptIndex + 1, prompts.length)} / {prompts.length}
+      </div>
       <div className="center-panel">
         {done ? (
           <div>
@@ -146,9 +159,10 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
       <div className="bottom-bar">
         <div className="bottom-inner">
           <input
-            className="input input--lg"
+            ref={inputRef}
+            className={`input input--lg ${invalid ? 'input--error shake' : ''}`}
             autoFocus
-            placeholder={promptIndex % 2 === 1 ? 'Type the script…' : 'Type the romanization…'}
+            placeholder={promptIndex % 2 === 1 ? 'Type the script' : 'Type the romanization'}
             value={inputText}
             onChange={(e) => setInputText(e.target.value)}
             onKeyDown={(e) => { if (e.key === 'Enter') onSubmit(); }}
@@ -156,6 +170,12 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
           <button className="button button--primary button--lg" onClick={onSubmit}>Submit</button>
         </div>
       </div>
+      <Feedback
+        open={!!showFeedback}
+        type={showFeedback === 'success' ? 'success' : 'error'}
+        title={showFeedback === 'success' ? 'Correct!' : 'Try again'}
+        onClose={() => setShowFeedback(null)}
+      />
     </div>
   );
 }
