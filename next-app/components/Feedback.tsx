@@ -40,7 +40,7 @@ export default function Feedback({
         </div>
         <h3 id="feedback-title" className="popup__title">{title}</h3>
         {message ? <p className="popup__desc">{message}</p> : null}
-        <div className="actions">
+        <div className={`actions ${secondaryLabel ? '' : 'actions--single'}`}>
           <button className="button button--primary button--lg" onClick={onClose}>{label}</button>
           {secondaryLabel ? (
             <button className="button button--ghost button--lg" onClick={onSecondary}>{secondaryLabel}</button>

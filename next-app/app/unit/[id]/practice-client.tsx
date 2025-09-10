@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useToast } from '@/components/ToastProvider';
+import { useProgress } from '@/components/ProgressProvider';
 import Feedback from '@/components/Feedback';
 
 type Prompt = { content: string; answer: string };
@@ -21,6 +22,7 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
   const toast = useToast();
   const [showFeedback, setShowFeedback] = useState<null | 'success' | 'error' | 'reveal'>(null);
   const [revealText, setRevealText] = useState<string>('');
+  const { set: setProgress, clear: clearProgress } = useProgress();
 
   const shuffle = useCallback((array: Prompt[]) => {
     const arr = array.slice();
@@ -38,14 +40,18 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
     setAnswer(arr[idx]?.answer ?? '');
   }, []);
 
-  const getPrompts = useCallback(async () => {
+  const fetchPromptsData = useCallback(async (): Promise<Prompt[]> => {
+    const res = await fetch(`/api/prompts/${unitId}`, { cache: 'no-store' });
+    if (!res.ok) throw new Error('Failed to load prompts');
+    const data: Prompt[] = await res.json();
+    return shuffle(data);
+  }, [shuffle, unitId]);
+
+  const reloadPrompts = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
-      const res = await fetch(`/api/prompts/${unitId}`, { cache: 'no-store' });
-      if (!res.ok) throw new Error('Failed to load prompts');
-      const data: Prompt[] = await res.json();
-      const shuffled = shuffle(data);
+      const shuffled = await fetchPromptsData();
       setPrompts(shuffled);
       setPromptIndex(shuffled.length > 0 ? 0 : -1);
       if (shuffled.length > 0) {
@@ -58,11 +64,42 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
       setLoading(false);
       setInputText('');
     }
-  }, [loadPrompt, shuffle, unitId]);
+  }, [fetchPromptsData, loadPrompt]);
 
   useEffect(() => {
-    getPrompts();
-  }, [getPrompts]);
+    let alive = true;
+    (async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const shuffled = await fetchPromptsData();
+        if (!alive) return;
+        setPrompts(shuffled);
+        const idx = shuffled.length > 0 ? 0 : -1;
+        setPromptIndex(idx);
+        if (idx === 0) {
+          setDone(false);
+          loadPrompt(shuffled, 0);
+        }
+      } catch (e: any) {
+        if (!alive) return;
+        setError(e?.message || 'Failed to load prompts');
+      } finally {
+        if (!alive) return;
+        setLoading(false);
+        setInputText('');
+      }
+    })();
+    return () => { alive = false; };
+  }, [fetchPromptsData, loadPrompt]);
+
+  // keep header progress in sync
+  useEffect(() => {
+    const total = prompts.length;
+    const current = done ? total : (promptIndex >= 0 ? promptIndex + 1 : 0);
+    setProgress(current, total);
+    return () => { /* on unmount */ clearProgress(); };
+  }, [done, promptIndex, prompts.length, setProgress, clearProgress]);
 
   const nativeNorm = useCallback((s: string) => s.normalize('NFKC').trim(), []);
   const romanNorm = useCallback((s: string) => s.normalize('NFKC').trim().toLowerCase().replace(/[^a-z0-9]/g, ''), []);
@@ -118,13 +155,13 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
       if (!res.ok) throw new Error('Failed to create prompt');
       setNewContent('');
       setNewAnswer('');
-      await getPrompts();
+      await reloadPrompts();
     } catch (e: any) {
       toast.error(e?.message || 'Failed to create prompt');
     } finally {
       setCreating(false);
     }
-  }, [getPrompts, newAnswer, newContent, unitId, toast]);
+  }, [reloadPrompts, newAnswer, newContent, unitId, toast]);
 
   if (loading) return <div className="screen"><div className="center-panel"><p className="muted">Loading prompts...</p></div></div>;
   if (error) return <div className="screen"><div className="center-panel"><p className="muted" style={{ color: 'crimson' }}>{error}</p></div></div>;
@@ -148,9 +185,6 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
 
   return (
     <div className="screen">
-      <div className="progress progress--header" aria-hidden>
-        {Math.min(promptIndex + 1, prompts.length)} / {prompts.length}
-      </div>
       <div className="center-panel">
         {done ? (
           <div>

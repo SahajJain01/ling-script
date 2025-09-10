@@ -2,6 +2,7 @@ import './globals.css';
 import type { ReactNode } from 'react';
 import TopNav from '@/components/TopNav';
 import ToastProvider from '@/components/ToastProvider';
+import ProgressProvider from '@/components/ProgressProvider';
 
 export const metadata = {
   title: 'Ling Script',
@@ -16,8 +17,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       </head>
       <body>
         <ToastProvider>
-          <TopNav />
-          {children}
+          <ProgressProvider>
+            <TopNav />
+            {children}
+          </ProgressProvider>
         </ToastProvider>
       </body>
     </html>

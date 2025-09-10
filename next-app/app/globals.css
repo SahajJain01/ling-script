@@ -55,6 +55,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 /* App shell */
 .topbar { position: sticky; top: 0; left: 0; right: 0; height: var(--topbar-h); background: color-mix(in srgb, var(--surface) 92%, transparent); backdrop-filter: blur(6px); border-bottom: 1px solid var(--border); z-index: 50; }
 .topbar__inner { height: 100%; max-width: 860px; margin: 0 auto; display: flex; align-items: center; gap: 12px; padding: 0 clamp(16px, 4vw, 24px); }
+.topbar__inner .progress { margin-left: 0; }
 .brand { font-weight: 900; letter-spacing: 0.2px; }
 .topbar__spacer { margin-left: auto; }
 .backbtn { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--border); background: var(--surface); color: var(--fg); border-radius: 999px; padding: 10px 14px; cursor: pointer; font-weight: 700; box-shadow: none; }
@@ -114,12 +115,14 @@ button, input, select, textarea { font: inherit; color: inherit; }
 
 /* Progress */
 .progress { margin: 0 auto 8px; padding: 6px 12px; border-radius: 999px; background: color-mix(in srgb, var(--primary) 14%, transparent); color: color-mix(in srgb, var(--fg) 70%, transparent); font-weight: 800; }
-.progress--header { position: fixed; right: max(16px, env(safe-area-inset-right)); top: calc(env(safe-area-inset-top) + 12px); margin: 0; z-index: 55; }
+.progress--topbar { margin: 0; }
 
 /* Prompt card */
 .prompt { font-size: clamp(34px, 7vw, 52px); line-height: 1.2; text-align: center; margin-bottom: 8px; }
 .actions { display: grid; grid-template-columns: 1fr; gap: 10px; }
 @media (min-width: 480px) { .actions { grid-template-columns: 1fr 1fr; } }
+.actions--single { grid-template-columns: 1fr !important; justify-items: center; }
+.actions--single .button { width: auto; min-width: 180px; }
 
 /* Toasts */
 .toast-container { position: fixed; right: max(16px, env(safe-area-inset-right)); top: calc(env(safe-area-inset-top) + 16px); display: grid; gap: 8px; z-index: 60; }

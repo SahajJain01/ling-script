@@ -2,11 +2,13 @@
 
 import { useRouter, usePathname } from 'next/navigation';
 import { useCallback } from 'react';
+import { useProgress } from '@/components/ProgressProvider';
 
 export default function TopNav() {
   const router = useRouter();
   const pathname = usePathname();
   const isHome = pathname === '/' || pathname === '';
+  const { value: progress } = useProgress();
 
   const onBack = useCallback(() => {
     if (typeof window !== 'undefined' && window.history.length > 1) {
@@ -36,6 +38,11 @@ export default function TopNav() {
           </button>
         )}
         <div className="topbar__spacer" />
+        {progress ? (
+          <div className="progress progress--topbar" aria-live="polite">
+            {progress.current} / {progress.total}
+          </div>
+        ) : null}
       </div>
     </header>
   );
