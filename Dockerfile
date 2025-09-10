@@ -56,8 +56,8 @@ USER bun
 
 EXPOSE 3000
 
-# Apply DB schema, seed idempotently, then start Next standalone server
-CMD ["sh", "-lc", "bunx prisma db push --skip-generate --schema=./prisma/schema.prisma && bun prisma/seed.js && bun ./.next/standalone/server.js"]
+# Generate Prisma client, apply DB schema, seed idempotently, then start Next standalone server
+CMD ["sh", "-lc", "bunx prisma generate --schema=./prisma/schema.prisma && bunx prisma db push --skip-generate --schema=./prisma/schema.prisma && bun prisma/seed.js && bun ./.next/standalone/server.js"]
 
 # Basic healthcheck against the built-in health route
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
