@@ -3,7 +3,7 @@
 ## - Uses Next.js standalone output
 ## - Runs prisma db push on start to ensure schema exists (SQLite)
 
-FROM node:20-bookworm-slim AS deps
+FROM oven/bun:1-debian AS deps
 WORKDIR /app
 
 # Ensure OpenSSL is available so Prisma selects the correct (openssl-3) engine
@@ -11,9 +11,9 @@ RUN apt-get update -y \
     && apt-get install -y --no-install-recommends openssl libssl3 ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
-# Install dependencies (no lockfile present, so use install)
-COPY package.json ./
-RUN npm install --no-audit --no-fund
+# Install dependencies with Bun (uses bun.lock if present)
+COPY package.json bun.lock ./
+RUN bun install
 
 FROM deps AS builder
 WORKDIR /app
@@ -21,10 +21,10 @@ COPY . .
 # Ensure optional public dir exists so later COPY does not fail
 RUN mkdir -p /app/public
 # Generate Prisma client and build Next (standalone)
-RUN npx prisma generate
-RUN npm run build
+RUN bunx prisma generate
+RUN bun run build
 
-FROM node:20-bookworm-slim AS runner
+FROM oven/bun:1-debian AS runner
 WORKDIR /app
 ENV NODE_ENV=production
 ENV PORT=3000
@@ -35,7 +35,7 @@ ENV NODE_OPTIONS=--enable-source-maps
 
 # Ensure OpenSSL is available in runtime for Prisma engine
 RUN apt-get update -y \
-    && apt-get install -y --no-install-recommends openssl libssl3 ca-certificates \
+    && apt-get install -y --no-install-recommends openssl libssl3 ca-certificates curl \
     && rm -rf /var/lib/apt/lists/*
 
 # App artifacts
@@ -50,15 +50,15 @@ COPY --from=deps /app/node_modules ./node_modules
 
 # Ensure data dir exists for SQLite file and drop privileges
 RUN mkdir -p /app/data \
-    && chown -R node:node /app
+    && chown -R bun:bun /app
 
-USER node
+USER bun
 
 EXPOSE 3000
 
 # Apply DB schema, seed idempotently, then start Next standalone server
-CMD ["sh", "-lc", "node ./node_modules/prisma/build/index.js db push --skip-generate --schema=./prisma/schema.prisma && node ./prisma/seed.js && node ./.next/standalone/server.js"]
+CMD ["sh", "-lc", "bunx prisma db push --skip-generate --schema=./prisma/schema.prisma && bun prisma/seed.js && bun ./.next/standalone/server.js"]
 
 # Basic healthcheck against the built-in health route
 HEALTHCHECK --interval=30s --timeout=5s --start-period=10s --retries=3 \
-  CMD node -e "require('http').get('http://localhost:'+(process.env.PORT||3000)+'/api/health',r=>process.exit(r.statusCode===200?0:1)).on('error',()=>process.exit(1))"
+  CMD curl -fsS "http://localhost:${PORT:-3000}/api/health" >/dev/null || exit 1
