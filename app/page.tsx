@@ -2,6 +2,9 @@ import prisma from '@/lib/prisma';
 import Link from 'next/link';
 import type { CSSProperties } from 'react';
 
+// Avoid build-time prerender hitting the DB
+export const dynamic = 'force-dynamic';
+
 export default async function HomePage() {
   const langs = await prisma.lang.findMany({ select: { id: true, name: true }, orderBy: { id: 'asc' } });
   const getAccent = (id: number) => {

@@ -2,6 +2,8 @@ import prisma from '@/lib/prisma';
 import { notFound } from 'next/navigation';
 import PracticeClient from './practice-client';
 
+export const dynamic = 'force-dynamic';
+
 export default async function UnitPage({ params }: { params: Promise<{ id: string }> }) {
   const { id: idParam } = await params;
   const id = Number(idParam);
