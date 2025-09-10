@@ -136,6 +136,7 @@ button, input, select, textarea { font: inherit; color: inherit; }
 .popup__icon { width: 56px; height: 56px; display: grid; place-items: center; margin: 6px auto 10px; border-radius: 999px; }
 .popup--success .popup__icon { background: color-mix(in srgb, var(--primary) 18%, transparent); color: var(--primary-700); }
 .popup--error .popup__icon { background: color-mix(in srgb, #ef4444 18%, transparent); color: #b91c1c; }
+.popup--info .popup__icon { background: color-mix(in srgb, var(--accent) 22%, transparent); color: #92400e; }
 .popup__title { margin: 0 0 6px; font-size: 22px; font-weight: 900; }
 .popup__desc { margin: 0 0 12px; color: var(--muted); }
 @keyframes scale-in { from { opacity: 0; transform: scale(0.98); } to { opacity: 1; transform: scale(1); } }

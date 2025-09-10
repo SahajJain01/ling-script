@@ -19,7 +19,8 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
   const [invalid, setInvalid] = useState(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const toast = useToast();
-  const [showFeedback, setShowFeedback] = useState<null | 'success' | 'error'>(null);
+  const [showFeedback, setShowFeedback] = useState<null | 'success' | 'error' | 'reveal'>(null);
+  const [revealText, setRevealText] = useState<string>('');
 
   const shuffle = useCallback((array: Prompt[]) => {
     const arr = array.slice();
@@ -63,10 +64,17 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
     getPrompts();
   }, [getPrompts]);
 
+  const nativeNorm = useCallback((s: string) => s.normalize('NFKC').trim(), []);
+  const romanNorm = useCallback((s: string) => s.normalize('NFKC').trim().toLowerCase().replace(/[^a-z0-9]/g, ''), []);
   const isValid = useCallback(() => {
     const reverse = promptIndex % 2 === 1;
-    return reverse ? prompt === inputText : answer === inputText;
-  }, [answer, inputText, prompt, promptIndex]);
+    if (reverse) {
+      // User types the native script
+      return nativeNorm(prompt) === nativeNorm(inputText);
+    }
+    // User types the romanization; ignore spaces, hyphens, punctuation
+    return romanNorm(answer) === romanNorm(inputText);
+  }, [answer, inputText, nativeNorm, romanNorm, prompt, promptIndex]);
 
   const next = useCallback(() => {
     const idx = promptIndex + 1;
@@ -81,16 +89,15 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
   }, [loadPrompt, promptIndex, prompts]);
 
   const onSubmit = useCallback(() => {
+    if (showFeedback) return; // guard while popup open
     if (isValid()) {
       setShowFeedback('success');
-      setTimeout(() => { setShowFeedback(null); next(); }, 600);
     } else {
       setInvalid(true);
       setShowFeedback('error');
-      setTimeout(() => { setShowFeedback(null); setInvalid(false); }, 500);
-      if (inputRef.current) inputRef.current.focus();
+      setTimeout(() => setInvalid(false), 340);
     }
-  }, [isValid, next]);
+  }, [isValid, showFeedback]);
 
   const shown = useMemo(() => (promptIndex % 2 === 1 ? answer : prompt), [answer, prompt, promptIndex]);
 
@@ -119,7 +126,7 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
     }
   }, [getPrompts, newAnswer, newContent, unitId, toast]);
 
-  if (loading) return <div className="screen"><div className="center-panel"><p className="muted">Loading prompts…</p></div></div>;
+  if (loading) return <div className="screen"><div className="center-panel"><p className="muted">Loading prompts...</p></div></div>;
   if (error) return <div className="screen"><div className="center-panel"><p className="muted" style={{ color: 'crimson' }}>{error}</p></div></div>;
   if (prompts.length === 0) {
     return (
@@ -132,7 +139,7 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
             <input className="input input--lg" placeholder="Script (native)" value={newContent} onChange={(e) => setNewContent(e.target.value)} />
             <button className="button button--ghost button--lg" disabled>+ Prompt</button>
             <input className="input input--lg" placeholder="Roman (latin)" value={newAnswer} onChange={(e) => setNewAnswer(e.target.value)} />
-            <button className="button button--primary button--lg" disabled={creating || !newContent || !newAnswer} onClick={addPrompt}>{creating ? 'Adding…' : 'Add'}</button>
+            <button className="button button--primary button--lg" disabled={creating || !newContent || !newAnswer} onClick={addPrompt}>{creating ? 'Adding...' : 'Add'}</button>
           </div>
         </div>
       </div>
@@ -165,16 +172,37 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
             placeholder={promptIndex % 2 === 1 ? 'Type the script' : 'Type the romanization'}
             value={inputText}
             onChange={(e) => setInputText(e.target.value)}
-            onKeyDown={(e) => { if (e.key === 'Enter') onSubmit(); }}
+            onKeyDown={(e) => { if (e.key === 'Enter' && inputText) onSubmit(); }}
           />
-          <button className="button button--primary button--lg" onClick={onSubmit}>Submit</button>
+          <button className="button button--primary button--lg" disabled={!inputText} onClick={onSubmit}>Submit</button>
         </div>
       </div>
       <Feedback
         open={!!showFeedback}
-        type={showFeedback === 'success' ? 'success' : 'error'}
-        title={showFeedback === 'success' ? 'Correct!' : 'Try again'}
-        onClose={() => setShowFeedback(null)}
+        type={showFeedback === 'success' ? 'success' : showFeedback === 'reveal' ? 'info' : 'error'}
+        title={showFeedback === 'success' ? 'Correct!' : showFeedback === 'reveal' ? 'Answer' : 'Incorrect'}
+        message={showFeedback === 'reveal' ? revealText : undefined}
+        label={showFeedback === 'success' ? 'Next' : showFeedback === 'reveal' ? 'Continue' : 'Try Again'}
+        secondaryLabel={showFeedback === 'success' || showFeedback === 'reveal' ? undefined : 'Skip'}
+        onClose={() => {
+          if (showFeedback === 'success') {
+            setShowFeedback(null);
+            next();
+          } else if (showFeedback === 'reveal') {
+            setShowFeedback(null);
+            next();
+          } else {
+            setShowFeedback(null);
+            setInvalid(false);
+            if (inputRef.current) inputRef.current.focus();
+          }
+        }}
+        onSecondary={showFeedback === 'success' || showFeedback === 'reveal' ? undefined : () => {
+          const reverse = promptIndex % 2 === 1;
+          const expected = reverse ? prompt : answer;
+          setRevealText(expected);
+          setShowFeedback('reveal');
+        }}
       />
     </div>
   );
