@@ -1,2 +1,0 @@
-# ling-script-api
- 
