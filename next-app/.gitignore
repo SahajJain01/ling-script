@@ -1,0 +1,19 @@
+# Next.js
+.next/
+.vercel/
+
+# Node
+node_modules/
+npm-debug.log*
+
+# Env
+.env
+.env.local
+.env.production
+
+# SQLite data files
+data/*.db
+data/*.db-journal
+data/*.sqlite
+data/*.sqlite-journal
+
