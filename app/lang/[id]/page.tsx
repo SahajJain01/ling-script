@@ -3,8 +3,9 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import type { CSSProperties } from 'react';
 
-export default async function LangPage({ params }: { params: { id: string } }) {
-  const id = Number(params.id);
+export default async function LangPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id: idParam } = await params;
+  const id = Number(idParam);
   if (Number.isNaN(id)) notFound();
 
   const lang = await prisma.lang.findUnique({
