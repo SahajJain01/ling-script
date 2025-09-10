@@ -1,8 +1,9 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 
-export async function GET(_req: Request, { params }: { params: { langId: string } }) {
-  const langId = Number(params.langId);
+export async function GET(_req: Request, context: { params: Promise<{ langId: string }> }) {
+  const { langId: langIdParam } = await context.params;
+  const langId = Number(langIdParam);
   if (Number.isNaN(langId)) return NextResponse.json({ error: 'Invalid langId' }, { status: 400 });
   const data = await prisma.lang.findFirst({
     select: {
