@@ -23,7 +23,6 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
   const toast = useToast();
   const [showFeedback, setShowFeedback] = useState<null | 'success' | 'error' | 'reveal'>(null);
   const [revealText, setRevealText] = useState<string>('');
-  const [deviceId, setDeviceId] = useState<string | null>(null);
   const { set: setProgress, clear: clearProgress } = useProgress();
 
   const router = useRouter();
@@ -33,10 +32,6 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
     setAnswer(arr[idx]?.answer ?? '');
   }, []);
 
-  useEffect(() => {
-    setDeviceId(localStorage.getItem('deviceId'));
-  }, []);
-
   const fetchPromptsData = useCallback(async (): Promise<Prompt[]> => {
     const res = await fetch(`/api/prompts/${unitId}`, { cache: 'no-store' });
     if (!res.ok) throw new Error('Failed to load prompts');
@@ -44,28 +39,7 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
     return data;
   }, [unitId]);
 
-  const fetchProgress = useCallback(async (id: string) => {
-    const res = await fetch(`/api/progress/${unitId}?deviceId=${id}`, { cache: 'no-store' });
-    if (!res.ok) return null;
-    const data: { currentPrompt: number; completed: boolean } = await res.json();
-    return data;
-  }, [unitId]);
-
-  const saveProgress = useCallback(async (idx: number, completed: boolean) => {
-    if (!deviceId) return;
-    try {
-      await fetch('/api/progress', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ deviceId, unitId, currentPrompt: idx, completed }),
-      });
-    } catch {
-      /* ignore */
-    }
-  }, [deviceId, unitId]);
-
   const reloadPrompts = useCallback(async () => {
-    if (!deviceId) return;
     try {
       setLoading(true);
       setError(null);
@@ -91,7 +65,6 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
   }, [fetchPromptsData, loadPrompt, unitId]);
 
   useEffect(() => {
-    if (!deviceId) return;
     let alive = true;
     (async () => {
       try {
@@ -190,14 +163,12 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
     if (idx >= prompts.length) {
       setDone(true);
       setInputText('');
-      void saveProgress(prompts.length, true);
       return;
     }
     setPromptIndex(idx);
     loadPrompt(prompts, idx);
     setInputText('');
-    void saveProgress(idx, false);
-  }, [loadPrompt, promptIndex, prompts, saveProgress]);
+  }, [loadPrompt, promptIndex, prompts]);
 
   const onSubmit = useCallback(() => {
     if (showFeedback) return; // guard while popup open
