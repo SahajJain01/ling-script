@@ -262,20 +262,22 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
           <div className="prompt">{shown}</div>
         )}
       </div>
-      <div className="bottom-bar">
-        <div className="bottom-inner">
-          <input
-            ref={inputRef}
-            className={`input input--lg ${invalid ? 'input--error shake' : ''}`}
-            autoFocus
-            placeholder={promptIndex % 2 === 1 ? 'Type the script' : 'Type the romanization'}
-            value={inputText}
-            onChange={(e) => setInputText(e.target.value)}
-            onKeyDown={(e) => { if (e.key === 'Enter' && inputText) onSubmit(); }}
-          />
-          <button className="button button--primary button--lg" disabled={!inputText} onClick={onSubmit}>Submit</button>
+      {!done && (
+        <div className="bottom-bar">
+          <div className="bottom-inner">
+            <input
+              ref={inputRef}
+              className={`input input--lg ${invalid ? 'input--error shake' : ''}`}
+              autoFocus
+              placeholder={promptIndex % 2 === 1 ? 'Type the script' : 'Type the romanization'}
+              value={inputText}
+              onChange={(e) => setInputText(e.target.value)}
+              onKeyDown={(e) => { if (e.key === 'Enter' && inputText) onSubmit(); }}
+            />
+            <button className="button button--primary button--lg" disabled={!inputText} onClick={onSubmit}>Submit</button>
+          </div>
         </div>
-      </div>
+      )}
       <Feedback
         open={!!showFeedback}
         type={showFeedback === 'success' ? 'success' : showFeedback === 'reveal' ? 'info' : 'error'}
