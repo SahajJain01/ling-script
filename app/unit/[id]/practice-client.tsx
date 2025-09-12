@@ -46,19 +46,26 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
     const res = await fetch(`/api/prompts/${unitId}`, { cache: 'no-store' });
     if (!res.ok) throw new Error('Failed to load prompts');
     const data: Prompt[] = await res.json();
-    return shuffle(data);
-  }, [shuffle, unitId]);
+    return data;
+  }, [unitId]);
 
   const reloadPrompts = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
-      const shuffled = await fetchPromptsData();
+      const data = await fetchPromptsData();
+      const shuffled = shuffle(data);
       setPrompts(shuffled);
       setPromptIndex(shuffled.length > 0 ? 0 : -1);
       if (shuffled.length > 0) {
         setDone(false);
         loadPrompt(shuffled, 0);
+      }
+      try {
+        localStorage.setItem(`unit-prompts:${unitId}`, JSON.stringify(shuffled));
+        localStorage.removeItem(`unit-progress:${unitId}`);
+      } catch {
+        // ignore
       }
     } catch (e: any) {
       setError(e?.message || 'Failed to load prompts');
@@ -66,7 +73,7 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
       setLoading(false);
       setInputText('');
     }
-  }, [fetchPromptsData, loadPrompt]);
+  }, [fetchPromptsData, loadPrompt, shuffle, unitId]);
 
   useEffect(() => {
     let alive = true;
@@ -74,10 +81,28 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
       try {
         setLoading(true);
         setError(null);
-        const shuffled = await fetchPromptsData();
+        const data = await fetchPromptsData();
         if (!alive) return;
-        setPrompts(shuffled);
-        let idx = shuffled.length > 0 ? 0 : -1;
+        let ordered = data;
+        try {
+          const rawPrompts = localStorage.getItem(`unit-prompts:${unitId}`);
+          if (rawPrompts) {
+            const parsed = JSON.parse(rawPrompts);
+            if (Array.isArray(parsed) && parsed.length === data.length) {
+              ordered = parsed;
+            } else {
+              ordered = shuffle(data);
+              localStorage.setItem(`unit-prompts:${unitId}`, JSON.stringify(ordered));
+            }
+          } else {
+            ordered = shuffle(data);
+            localStorage.setItem(`unit-prompts:${unitId}`, JSON.stringify(ordered));
+          }
+        } catch {
+          ordered = shuffle(data);
+        }
+        setPrompts(ordered);
+        let idx = ordered.length > 0 ? 0 : -1;
         let doneFromStorage = false;
         try {
           const raw = localStorage.getItem(`unit-progress:${unitId}`);
@@ -85,11 +110,11 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
             const parsed = JSON.parse(raw);
             if (parsed && typeof parsed.current === 'number') {
               const stored = Math.floor(parsed.current);
-              if (stored >= shuffled.length) {
+              if (stored >= ordered.length) {
                 doneFromStorage = true;
-                idx = Math.max(shuffled.length - 1, 0);
+                idx = Math.max(ordered.length - 1, 0);
               } else if (stored > 0) {
-                idx = Math.min(stored - 1, shuffled.length - 1);
+                idx = Math.min(stored - 1, ordered.length - 1);
               }
             }
           }
@@ -99,7 +124,7 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
           setDone(true);
         } else if (idx >= 0) {
           setDone(false);
-          loadPrompt(shuffled, idx);
+          loadPrompt(ordered, idx);
         }
       } catch (e: any) {
         if (!alive) return;
@@ -111,7 +136,7 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
       }
     })();
     return () => { alive = false; };
-  }, [fetchPromptsData, loadPrompt, unitId]);
+  }, [fetchPromptsData, loadPrompt, unitId, shuffle]);
 
   // keep header progress in sync
   useEffect(() => {
@@ -123,10 +148,15 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
     setProgress(current, total);
     try {
       const key = `unit-progress:${unitId}`;
+      const keyPrompts = `unit-prompts:${unitId}`;
       if (!total || current <= 0) {
         localStorage.removeItem(key);
+        localStorage.removeItem(keyPrompts);
       } else {
         localStorage.setItem(key, JSON.stringify({ current, total }));
+        if (done) {
+          localStorage.removeItem(keyPrompts);
+        }
       }
     } catch {
       // ignore
