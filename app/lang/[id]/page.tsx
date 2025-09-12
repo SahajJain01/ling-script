@@ -1,5 +1,6 @@
 import prisma from '@/lib/prisma';
 import { notFound } from 'next/navigation';
+
 import UnitTile from './unit-tile';
 
 export const dynamic = 'force-dynamic';
