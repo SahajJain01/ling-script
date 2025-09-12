@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 import TopNav from '@/components/TopNav';
 import ToastProvider from '@/components/ToastProvider';
 import ProgressProvider from '@/components/ProgressProvider';
+import ScriptDirectionProvider from '@/components/ScriptDirectionProvider';
 import DeviceId from '@/components/DeviceId';
 
 export const metadata = {
@@ -20,8 +21,10 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <DeviceId />
         <ToastProvider>
           <ProgressProvider>
-            <TopNav />
-            {children}
+            <ScriptDirectionProvider>
+              <TopNav />
+              {children}
+            </ScriptDirectionProvider>
           </ProgressProvider>
         </ToastProvider>
       </body>

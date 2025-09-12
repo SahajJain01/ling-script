@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/components/ToastProvider';
 import { useProgress } from '@/components/ProgressProvider';
+import { useScriptDirection } from '@/components/ScriptDirectionProvider';
 import Feedback from '@/components/Feedback';
 
 type Prompt = { content: string; answer: string };
@@ -16,7 +17,7 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
   const [prompt, setPrompt] = useState('');
   const [answer, setAnswer] = useState('');
   const [inputText, setInputText] = useState('');
-  const [reverse, setReverse] = useState(false); // false: Script -> Roman, true: Roman -> Script
+  const { reverse } = useScriptDirection(); // false: Script -> Roman, true: Roman -> Script
   const [done, setDone] = useState(false);
   const [invalid, setInvalid] = useState(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -24,6 +25,7 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
   const [showFeedback, setShowFeedback] = useState<null | 'success' | 'error' | 'reveal'>(null);
   const [revealText, setRevealText] = useState<string>('');
   const { set: setProgress, clear: clearProgress } = useProgress();
+  const [deviceId, setDeviceId] = useState<string | null>(null);
 
   const router = useRouter();
 
@@ -32,11 +34,7 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
     setAnswer(arr[idx]?.answer ?? '');
   }, []);
 
-  useEffect(() => {
-    setDeviceId(localStorage.getItem('deviceId'));
-  }, []);
-
-  const fetchPromptsData = useCallback(async (id: string): Promise<Prompt[]> => {
+  const fetchPromptsData = useCallback(async (): Promise<Prompt[]> => {
     const res = await fetch(`/api/prompts/${unitId}`, { cache: 'no-store' });
     if (!res.ok) throw new Error('Failed to load prompts');
     const data: Prompt[] = await res.json();
@@ -87,7 +85,11 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
       setLoading(false);
       setInputText('');
     }
-  }, [fetchPromptsData, loadPrompt, unitId]);
+  }, [deviceId, fetchPromptsData, loadPrompt, unitId]);
+
+  useEffect(() => {
+    setDeviceId(localStorage.getItem('deviceId'));
+  }, []);
 
   useEffect(() => {
     if (!deviceId) return;
@@ -101,24 +103,34 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
         setPrompts(data);
         try { localStorage.removeItem(`unit-prompts:${unitId}`); } catch { /* cleanup old data */ }
         let idx = data.length > 0 ? 0 : -1;
-        let doneFromStorage = false;
-        try {
-          const raw = localStorage.getItem(`unit-progress:${unitId}`);
-          if (raw) {
-            const parsed = JSON.parse(raw);
-            if (parsed && typeof parsed.current === 'number') {
-              const stored = Math.floor(parsed.current);
-              if (stored >= data.length) {
-                doneFromStorage = true;
-                idx = Math.max(data.length - 1, 0);
-              } else if (stored > 0) {
-                idx = Math.min(stored - 1, data.length - 1);
+        let doneFromServer = false;
+        const server = await fetchProgress(deviceId);
+        if (server) {
+          if (server.completed) {
+            doneFromServer = true;
+            idx = Math.max(data.length - 1, 0);
+          } else if (server.currentPrompt > 0) {
+            idx = Math.min(server.currentPrompt, data.length - 1);
+          }
+        } else {
+          try {
+            const raw = localStorage.getItem(`unit-progress:${unitId}`);
+            if (raw) {
+              const parsed = JSON.parse(raw);
+              if (parsed && typeof parsed.current === 'number') {
+                const stored = Math.floor(parsed.current);
+                if (stored >= data.length) {
+                  doneFromServer = true;
+                  idx = Math.max(data.length - 1, 0);
+                } else if (stored > 0) {
+                  idx = Math.min(stored - 1, data.length - 1);
+                }
               }
             }
-          }
-        } catch { /* ignore */ }
+          } catch { /* ignore */ }
+        }
         setPromptIndex(idx);
-        if (doneFromStorage) {
+        if (doneFromServer) {
           setDone(true);
         } else if (idx >= 0) {
           setDone(false);
@@ -134,7 +146,7 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
       }
     })();
     return () => { alive = false; };
-  }, [fetchPromptsData, loadPrompt, unitId]);
+  }, [deviceId, fetchPromptsData, fetchProgress, loadPrompt, unitId]);
 
   // keep header progress in sync
   useEffect(() => {
@@ -276,6 +288,7 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
                   setPromptIndex(0);
                   loadPrompt(prompts, 0);
                   setInputText('');
+                  void saveProgress(0, false);
                 }}
               >
                 Restart
@@ -284,13 +297,6 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
           </div>
         ) : (
           <div>
-            <button
-              className="backbtn"
-              onClick={() => setReverse((r) => !r)}
-              style={{ marginBottom: 12 }}
-            >
-              {reverse ? 'Roman → Script' : 'Script → Roman'}
-            </button>
             <div className="prompt">{shown}</div>
           </div>
         )}
