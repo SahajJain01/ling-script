@@ -101,6 +101,22 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
     return () => { /* on unmount */ clearProgress(); };
   }, [done, promptIndex, prompts.length, setProgress, clearProgress]);
 
+  // Dynamic viewport height for mobile browsers
+  useEffect(() => {
+    const root = document.documentElement;
+    const update = () => {
+      const vh = window.visualViewport?.height || window.innerHeight;
+      root.style.setProperty('--app-h', `${vh}px`);
+    };
+    update();
+    window.addEventListener('resize', update);
+    window.visualViewport?.addEventListener('resize', update);
+    return () => {
+      window.removeEventListener('resize', update);
+      window.visualViewport?.removeEventListener('resize', update);
+    };
+  }, []);
+
   const nativeNorm = useCallback((s: string) => s.normalize('NFKC').trim(), []);
   const romanNorm = useCallback((s: string) => s.normalize('NFKC').trim().toLowerCase().replace(/[^a-z0-9]/g, ''), []);
   const isValid = useCallback(() => {
