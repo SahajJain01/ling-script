@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useToast } from '@/components/ToastProvider';
 import { useProgress } from '@/components/ProgressProvider';
 import Feedback from '@/components/Feedback';
@@ -23,6 +24,7 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
   const [showFeedback, setShowFeedback] = useState<null | 'success' | 'error' | 'reveal'>(null);
   const [revealText, setRevealText] = useState<string>('');
   const { set: setProgress, clear: clearProgress } = useProgress();
+  const router = useRouter();
 
   const shuffle = useCallback((array: Prompt[]) => {
     const arr = array.slice();
@@ -113,6 +115,9 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
 
   // keep header progress in sync
   useEffect(() => {
+    if (loading) {
+      return () => { clearProgress(); };
+    }
     const total = prompts.length;
     const current = done ? total : (promptIndex >= 0 ? promptIndex + 1 : 0);
     setProgress(current, total);
@@ -127,7 +132,7 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
       // ignore
     }
     return () => { /* on unmount */ clearProgress(); };
-  }, [done, promptIndex, prompts.length, unitId, setProgress, clearProgress]);
+  }, [loading, done, promptIndex, prompts.length, unitId, setProgress, clearProgress]);
 
   // Dynamic viewport height for mobile browsers
   useEffect(() => {
@@ -233,8 +238,24 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
         {done ? (
           <div>
             <p>Great job! You finished this unit.</p>
-            <div className="actions actions--single" style={{ marginTop: 12 }}>
-              <button className="button button--primary button--lg" onClick={() => { setDone(false); setPromptIndex(0); loadPrompt(prompts, 0); setInputText(''); }}>Restart</button>
+            <div className="actions" style={{ marginTop: 12 }}>
+              <button
+                className="button button--primary button--lg"
+                onClick={() => router.back()}
+              >
+                Back
+              </button>
+              <button
+                className="button button--ghost button--lg"
+                onClick={() => {
+                  setDone(false);
+                  setPromptIndex(0);
+                  loadPrompt(prompts, 0);
+                  setInputText('');
+                }}
+              >
+                Restart
+              </button>
             </div>
           </div>
         ) : (
