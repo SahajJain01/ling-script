@@ -39,7 +39,7 @@ export default function Feedback({
           )}
         </div>
         <h3 id="feedback-title" className="popup__title">{title}</h3>
-        {message ? <p className="popup__desc">{message}</p> : null}
+        <p className="popup__desc" aria-hidden={!message}>{message || String.fromCharCode(160)}</p>
         <div className={`actions ${secondaryLabel ? '' : 'actions--single'}`}>
           <button className="button button--primary button--lg" onClick={onClose}>{label}</button>
           {secondaryLabel ? (

@@ -75,11 +75,29 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
         const shuffled = await fetchPromptsData();
         if (!alive) return;
         setPrompts(shuffled);
-        const idx = shuffled.length > 0 ? 0 : -1;
+        let idx = shuffled.length > 0 ? 0 : -1;
+        let doneFromStorage = false;
+        try {
+          const raw = localStorage.getItem(`unit-progress:${unitId}`);
+          if (raw) {
+            const parsed = JSON.parse(raw);
+            if (parsed && typeof parsed.current === 'number') {
+              const stored = Math.floor(parsed.current);
+              if (stored >= shuffled.length) {
+                doneFromStorage = true;
+                idx = Math.max(shuffled.length - 1, 0);
+              } else if (stored > 0) {
+                idx = Math.min(stored - 1, shuffled.length - 1);
+              }
+            }
+          }
+        } catch { /* ignore */ }
         setPromptIndex(idx);
-        if (idx === 0) {
+        if (doneFromStorage) {
+          setDone(true);
+        } else if (idx >= 0) {
           setDone(false);
-          loadPrompt(shuffled, 0);
+          loadPrompt(shuffled, idx);
         }
       } catch (e: any) {
         if (!alive) return;
@@ -91,15 +109,25 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
       }
     })();
     return () => { alive = false; };
-  }, [fetchPromptsData, loadPrompt]);
+  }, [fetchPromptsData, loadPrompt, unitId]);
 
   // keep header progress in sync
   useEffect(() => {
     const total = prompts.length;
     const current = done ? total : (promptIndex >= 0 ? promptIndex + 1 : 0);
     setProgress(current, total);
+    try {
+      const key = `unit-progress:${unitId}`;
+      if (!total || current <= 0) {
+        localStorage.removeItem(key);
+      } else {
+        localStorage.setItem(key, JSON.stringify({ current, total }));
+      }
+    } catch {
+      // ignore
+    }
     return () => { /* on unmount */ clearProgress(); };
-  }, [done, promptIndex, prompts.length, setProgress, clearProgress]);
+  }, [done, promptIndex, prompts.length, unitId, setProgress, clearProgress]);
 
   // Dynamic viewport height for mobile browsers
   useEffect(() => {
@@ -205,7 +233,7 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
         {done ? (
           <div>
             <p>Great job! You finished this unit.</p>
-            <div className="actions" style={{ marginTop: 12, maxWidth: 360 }}>
+            <div className="actions actions--single" style={{ marginTop: 12 }}>
               <button className="button button--primary button--lg" onClick={() => { setDone(false); setPromptIndex(0); loadPrompt(prompts, 0); setInputText(''); }}>Restart</button>
             </div>
           </div>
