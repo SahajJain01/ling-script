@@ -150,8 +150,18 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
     const total = prompts.length;
     const current = done ? total : (promptIndex >= 0 ? promptIndex + 1 : 0);
     setProgress(current, total);
+    try {
+      const key = `unit-progress:${unitId}`;
+      if (!total || current <= 0) {
+        localStorage.removeItem(key);
+      } else {
+        localStorage.setItem(key, JSON.stringify({ current, total }));
+      }
+    } catch {
+      // ignore
+    }
     return () => { /* on unmount */ clearProgress(); };
-  }, [done, promptIndex, prompts.length, setProgress, clearProgress]);
+  }, [done, promptIndex, prompts.length, unitId, setProgress, clearProgress]);
 
   // Dynamic viewport height for mobile browsers
   useEffect(() => {

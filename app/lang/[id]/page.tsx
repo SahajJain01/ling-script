@@ -1,6 +1,7 @@
 import prisma from '@/lib/prisma';
 import { notFound } from 'next/navigation';
-import UnitGrid from './UnitGrid';
+
+import UnitTile from './unit-tile';
 
 export const dynamic = 'force-dynamic';
 
@@ -25,7 +26,11 @@ export default async function LangPage({ params }: { params: Promise<{ id: strin
         {lang.units.length === 0 ? (
           <p className="muted">No units yet.</p>
         ) : (
-          <UnitGrid units={lang.units} />
+          <div className="grid">
+            {lang.units.map((u) => (
+              <UnitTile key={u.id} unit={u} />
+            ))}
+          </div>
         )}
       </section>
     </div>
