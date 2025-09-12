@@ -9,7 +9,6 @@ async function main() {
   const destructive = process.env.DESTRUCTIVE_SEED === 'true';
   if (destructive) {
     console.log('Destructive seed enabled: clearing existing data');
-    await prisma.progress.deleteMany();
     await prisma.prompt.deleteMany();
     await prisma.unit.deleteMany();
     await prisma.lang.deleteMany();

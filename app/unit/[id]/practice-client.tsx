@@ -25,7 +25,6 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
   const [showFeedback, setShowFeedback] = useState<null | 'success' | 'error' | 'reveal'>(null);
   const [revealText, setRevealText] = useState<string>('');
   const { set: setProgress, clear: clearProgress } = useProgress();
-  const [deviceId, setDeviceId] = useState<string | null>(null);
 
   const router = useRouter();
 
@@ -41,28 +40,7 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
     return data;
   }, [unitId]);
 
-  const fetchProgress = useCallback(async (id: string) => {
-    const res = await fetch(`/api/progress/${unitId}?deviceId=${id}`, { cache: 'no-store' });
-    if (!res.ok) return null;
-    const data: { currentPrompt: number; completed: boolean } = await res.json();
-    return data;
-  }, [unitId]);
-
-  const saveProgress = useCallback(async (idx: number, completed: boolean) => {
-    if (!deviceId) return;
-    try {
-      await fetch('/api/progress', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ deviceId, unitId, currentPrompt: idx, completed }),
-      });
-    } catch {
-      /* ignore */
-    }
-  }, [deviceId, unitId]);
-
   const reloadPrompts = useCallback(async () => {
-    if (!deviceId) return;
     try {
       setLoading(true);
       setError(null);
@@ -85,14 +63,9 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
       setLoading(false);
       setInputText('');
     }
-  }, [deviceId, fetchPromptsData, loadPrompt, unitId]);
+  }, [fetchPromptsData, loadPrompt, unitId]);
 
   useEffect(() => {
-    setDeviceId(localStorage.getItem('deviceId'));
-  }, []);
-
-  useEffect(() => {
-    if (!deviceId) return;
     let alive = true;
     (async () => {
       try {
@@ -103,34 +76,24 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
         setPrompts(data);
         try { localStorage.removeItem(`unit-prompts:${unitId}`); } catch { /* cleanup old data */ }
         let idx = data.length > 0 ? 0 : -1;
-        let doneFromServer = false;
-        const server = await fetchProgress(deviceId);
-        if (server) {
-          if (server.completed) {
-            doneFromServer = true;
-            idx = Math.max(data.length - 1, 0);
-          } else if (server.currentPrompt > 0) {
-            idx = Math.min(server.currentPrompt, data.length - 1);
-          }
-        } else {
-          try {
-            const raw = localStorage.getItem(`unit-progress:${unitId}`);
-            if (raw) {
-              const parsed = JSON.parse(raw);
-              if (parsed && typeof parsed.current === 'number') {
-                const stored = Math.floor(parsed.current);
-                if (stored >= data.length) {
-                  doneFromServer = true;
-                  idx = Math.max(data.length - 1, 0);
-                } else if (stored > 0) {
-                  idx = Math.min(stored - 1, data.length - 1);
-                }
+        let doneFromStorage = false;
+        try {
+          const raw = localStorage.getItem(`unit-progress:${unitId}`);
+          if (raw) {
+            const parsed = JSON.parse(raw);
+            if (parsed && typeof parsed.current === 'number') {
+              const stored = Math.floor(parsed.current);
+              if (stored >= data.length) {
+                doneFromStorage = true;
+                idx = Math.max(data.length - 1, 0);
+              } else if (stored > 0) {
+                idx = Math.min(stored - 1, data.length - 1);
               }
             }
-          } catch { /* ignore */ }
-        }
+          }
+        } catch { /* ignore */ }
         setPromptIndex(idx);
-        if (doneFromServer) {
+        if (doneFromStorage) {
           setDone(true);
         } else if (idx >= 0) {
           setDone(false);
@@ -146,7 +109,7 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
       }
     })();
     return () => { alive = false; };
-  }, [deviceId, fetchPromptsData, fetchProgress, loadPrompt, unitId]);
+  }, [fetchPromptsData, loadPrompt, unitId]);
 
   // keep header progress in sync
   useEffect(() => {
@@ -201,14 +164,12 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
     if (idx >= prompts.length) {
       setDone(true);
       setInputText('');
-      void saveProgress(prompts.length, true);
       return;
     }
     setPromptIndex(idx);
     loadPrompt(prompts, idx);
     setInputText('');
-    void saveProgress(idx, false);
-  }, [loadPrompt, promptIndex, prompts, saveProgress]);
+  }, [loadPrompt, promptIndex, prompts]);
 
   const onSubmit = useCallback(() => {
     if (showFeedback) return; // guard while popup open
@@ -288,7 +249,6 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
                   setPromptIndex(0);
                   loadPrompt(prompts, 0);
                   setInputText('');
-                  void saveProgress(0, false);
                 }}
               >
                 Restart
