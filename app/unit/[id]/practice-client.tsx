@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/components/ToastProvider';
 import { useProgress } from '@/components/ProgressProvider';
+import { useScriptDirection } from '@/components/ScriptDirectionProvider';
 import Feedback from '@/components/Feedback';
 
 type Prompt = { content: string; answer: string };
@@ -16,7 +17,7 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
   const [prompt, setPrompt] = useState('');
   const [answer, setAnswer] = useState('');
   const [inputText, setInputText] = useState('');
-  const [reverse, setReverse] = useState(false); // false: Script -> Roman, true: Roman -> Script
+  const { reverse } = useScriptDirection(); // false: Script -> Roman, true: Roman -> Script
   const [done, setDone] = useState(false);
   const [invalid, setInvalid] = useState(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -256,13 +257,6 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
           </div>
         ) : (
           <div>
-            <button
-              className="backbtn"
-              onClick={() => setReverse((r) => !r)}
-              style={{ marginBottom: 12 }}
-            >
-              {reverse ? 'Roman → Script' : 'Script → Roman'}
-            </button>
             <div className="prompt">{shown}</div>
           </div>
         )}

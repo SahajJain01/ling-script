@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 import TopNav from '@/components/TopNav';
 import ToastProvider from '@/components/ToastProvider';
 import ProgressProvider from '@/components/ProgressProvider';
-import DeviceId from '@/components/DeviceId';
+import ScriptDirectionProvider from '@/components/ScriptDirectionProvider';
 
 export const metadata = {
   title: 'Ling Script',
@@ -17,11 +17,12 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
       </head>
       <body>
-        <DeviceId />
         <ToastProvider>
           <ProgressProvider>
-            <TopNav />
-            {children}
+            <ScriptDirectionProvider>
+              <TopNav />
+              {children}
+            </ScriptDirectionProvider>
           </ProgressProvider>
         </ToastProvider>
       </body>

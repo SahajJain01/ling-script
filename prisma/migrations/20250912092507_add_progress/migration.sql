@@ -20,18 +20,3 @@ CREATE TABLE "Lang" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "name" TEXT NOT NULL
 );
-
--- CreateTable
-CREATE TABLE "Progress" (
-    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    "deviceId" TEXT NOT NULL,
-    "unitId" INTEGER NOT NULL,
-    "currentPrompt" INTEGER NOT NULL DEFAULT 0,
-    "completed" BOOLEAN NOT NULL DEFAULT false,
-    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "updatedAt" DATETIME NOT NULL,
-    CONSTRAINT "Progress_unitId_fkey" FOREIGN KEY ("unitId") REFERENCES "Unit" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
-);
-
--- CreateIndex
-CREATE UNIQUE INDEX "Progress_deviceId_unitId_key" ON "Progress"("deviceId", "unitId");

@@ -3,12 +3,14 @@
 import { useRouter, usePathname } from 'next/navigation';
 import { useCallback } from 'react';
 import { useProgress } from '@/components/ProgressProvider';
+import { useScriptDirection } from '@/components/ScriptDirectionProvider';
 
 export default function TopNav() {
   const router = useRouter();
   const pathname = usePathname();
   const isHome = pathname === '/' || pathname === '';
   const { value: progress } = useProgress();
+  const { reverse, toggle } = useScriptDirection();
 
   const onBack = useCallback(() => {
     if (typeof window !== 'undefined' && window.history.length > 1) {
@@ -38,6 +40,11 @@ export default function TopNav() {
           </button>
         )}
         <div className="topbar__spacer" />
+        {pathname?.startsWith('/unit/') ? (
+          <button className="backbtn" onClick={toggle} aria-label="Toggle script direction">
+            {reverse ? 'Roman → Script' : 'Script → Roman'}
+          </button>
+        ) : null}
         {progress ? (
           <div className="progress progress--topbar" aria-live="polite">
             {progress.current} / {progress.total}
