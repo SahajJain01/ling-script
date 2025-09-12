@@ -23,14 +23,21 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
   const [showFeedback, setShowFeedback] = useState<null | 'success' | 'error' | 'reveal'>(null);
   const [revealText, setRevealText] = useState<string>('');
   const { set: setProgress, clear: clearProgress } = useProgress();
+  const [deviceId, setDeviceId] = useState<string | null>(null);
 
-  const shuffle = useCallback((array: Prompt[]) => {
+  const shuffle = useCallback((array: Prompt[], seed: string) => {
     const arr = array.slice();
-    let currentIndex = arr.length, randomIndex: number | undefined;
-    while (currentIndex !== 0) {
-      randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex--;
-      [arr[currentIndex], arr[randomIndex]] = [arr[randomIndex], arr[currentIndex]];
+    let s = 0;
+    for (let i = 0; i < seed.length; i++) {
+      s = (s * 31 + seed.charCodeAt(i)) >>> 0;
+    }
+    const random = () => {
+      s = (s * 1664525 + 1013904223) >>> 0;
+      return s / 4294967296;
+    };
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
     }
     return arr;
   }, []);
@@ -40,18 +47,43 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
     setAnswer(arr[idx]?.answer ?? '');
   }, []);
 
-  const fetchPromptsData = useCallback(async (): Promise<Prompt[]> => {
+  useEffect(() => {
+    setDeviceId(localStorage.getItem('deviceId'));
+  }, []);
+
+  const fetchPromptsData = useCallback(async (id: string): Promise<Prompt[]> => {
     const res = await fetch(`/api/prompts/${unitId}`, { cache: 'no-store' });
     if (!res.ok) throw new Error('Failed to load prompts');
     const data: Prompt[] = await res.json();
-    return shuffle(data);
+    return shuffle(data, `${id}-${unitId}`);
   }, [shuffle, unitId]);
 
+  const fetchProgress = useCallback(async (id: string) => {
+    const res = await fetch(`/api/progress/${unitId}?deviceId=${id}`, { cache: 'no-store' });
+    if (!res.ok) return null;
+    const data: { currentPrompt: number; completed: boolean } = await res.json();
+    return data;
+  }, [unitId]);
+
+  const saveProgress = useCallback(async (idx: number, completed: boolean) => {
+    if (!deviceId) return;
+    try {
+      await fetch('/api/progress', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ deviceId, unitId, currentPrompt: idx, completed }),
+      });
+    } catch {
+      /* ignore */
+    }
+  }, [deviceId, unitId]);
+
   const reloadPrompts = useCallback(async () => {
+    if (!deviceId) return;
     try {
       setLoading(true);
       setError(null);
-      const shuffled = await fetchPromptsData();
+      const shuffled = await fetchPromptsData(deviceId);
       setPrompts(shuffled);
       setPromptIndex(shuffled.length > 0 ? 0 : -1);
       if (shuffled.length > 0) {
@@ -64,15 +96,16 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
       setLoading(false);
       setInputText('');
     }
-  }, [fetchPromptsData, loadPrompt]);
+  }, [deviceId, fetchPromptsData, loadPrompt]);
 
   useEffect(() => {
+    if (!deviceId) return;
     let alive = true;
     (async () => {
       try {
         setLoading(true);
         setError(null);
-        const shuffled = await fetchPromptsData();
+        const shuffled = await fetchPromptsData(deviceId);
         if (!alive) return;
         setPrompts(shuffled);
         const idx = shuffled.length > 0 ? 0 : -1;
@@ -91,7 +124,26 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
       }
     })();
     return () => { alive = false; };
-  }, [fetchPromptsData, loadPrompt]);
+  }, [deviceId, fetchPromptsData, loadPrompt]);
+
+  useEffect(() => {
+    if (!deviceId || prompts.length === 0) return;
+    let alive = true;
+    (async () => {
+      try {
+        const progress = await fetchProgress(deviceId);
+        if (!alive || !progress) return;
+        setPromptIndex(progress.currentPrompt);
+        setDone(progress.completed);
+        if (!progress.completed && progress.currentPrompt < prompts.length) {
+          loadPrompt(prompts, progress.currentPrompt);
+        }
+      } catch {
+        /* ignore */
+      }
+    })();
+    return () => { alive = false; };
+  }, [deviceId, prompts, fetchProgress, loadPrompt]);
 
   // keep header progress in sync
   useEffect(() => {
@@ -134,12 +186,14 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
     if (idx >= prompts.length) {
       setDone(true);
       setInputText('');
+      void saveProgress(prompts.length, true);
       return;
     }
     setPromptIndex(idx);
     loadPrompt(prompts, idx);
     setInputText('');
-  }, [loadPrompt, promptIndex, prompts]);
+    void saveProgress(idx, false);
+  }, [loadPrompt, promptIndex, prompts, saveProgress]);
 
   const onSubmit = useCallback(() => {
     if (showFeedback) return; // guard while popup open
@@ -206,7 +260,7 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
           <div>
             <p>Great job! You finished this unit.</p>
             <div className="actions" style={{ marginTop: 12, maxWidth: 360 }}>
-              <button className="button button--primary button--lg" onClick={() => { setDone(false); setPromptIndex(0); loadPrompt(prompts, 0); setInputText(''); }}>Restart</button>
+              <button className="button button--primary button--lg" onClick={() => { setDone(false); setPromptIndex(0); loadPrompt(prompts, 0); setInputText(''); void saveProgress(0, false); }}>Restart</button>
             </div>
           </div>
         ) : (
