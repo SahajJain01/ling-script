@@ -21,10 +21,24 @@ model Unit {
   lang    Lang     @relation(fields: [langId], references: [id])
   langId  Int
   prompts Prompt[]
+  progress Progress[]
 }
 
 model Lang {
   id    Int    @id @default(autoincrement())
   name  String
   units Unit[]
+}
+
+model Progress {
+  id            Int      @id @default(autoincrement())
+  deviceId      String
+  unit          Unit     @relation(fields: [unitId], references: [id])
+  unitId        Int
+  currentPrompt Int      @default(0)
+  completed     Boolean  @default(false)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@unique([deviceId, unitId])
 }
