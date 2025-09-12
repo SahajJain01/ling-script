@@ -23,6 +23,7 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
   const toast = useToast();
   const [showFeedback, setShowFeedback] = useState<null | 'success' | 'error' | 'reveal'>(null);
   const [revealText, setRevealText] = useState<string>('');
+  const [deviceId, setDeviceId] = useState<string | null>(null);
   const { set: setProgress, clear: clearProgress } = useProgress();
 
   const router = useRouter();
@@ -36,7 +37,7 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
     setDeviceId(localStorage.getItem('deviceId'));
   }, []);
 
-  const fetchPromptsData = useCallback(async (id: string): Promise<Prompt[]> => {
+  const fetchPromptsData = useCallback(async (): Promise<Prompt[]> => {
     const res = await fetch(`/api/prompts/${unitId}`, { cache: 'no-store' });
     if (!res.ok) throw new Error('Failed to load prompts');
     const data: Prompt[] = await res.json();
