@@ -1,6 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useToast } from '@/components/ToastProvider';
 import { useProgress } from '@/components/ProgressProvider';
 import Feedback from '@/components/Feedback';
@@ -15,7 +16,7 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
   const [prompt, setPrompt] = useState('');
   const [answer, setAnswer] = useState('');
   const [inputText, setInputText] = useState('');
-  // Alternate direction each prompt: even -> Script->Roman, odd -> Roman->Script
+  const [reverse, setReverse] = useState(false); // false: Script -> Roman, true: Roman -> Script
   const [done, setDone] = useState(false);
   const [invalid, setInvalid] = useState(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -23,24 +24,8 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
   const [showFeedback, setShowFeedback] = useState<null | 'success' | 'error' | 'reveal'>(null);
   const [revealText, setRevealText] = useState<string>('');
   const { set: setProgress, clear: clearProgress } = useProgress();
-  const [deviceId, setDeviceId] = useState<string | null>(null);
 
-  const shuffle = useCallback((array: Prompt[], seed: string) => {
-    const arr = array.slice();
-    let s = 0;
-    for (let i = 0; i < seed.length; i++) {
-      s = (s * 31 + seed.charCodeAt(i)) >>> 0;
-    }
-    const random = () => {
-      s = (s * 1664525 + 1013904223) >>> 0;
-      return s / 4294967296;
-    };
-    for (let i = arr.length - 1; i > 0; i--) {
-      const j = Math.floor(random() * (i + 1));
-      [arr[i], arr[j]] = [arr[j], arr[i]];
-    }
-    return arr;
-  }, []);
+  const router = useRouter();
 
   const loadPrompt = useCallback((arr: Prompt[], idx: number) => {
     setPrompt(arr[idx]?.content ?? '');
@@ -55,8 +40,8 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
     const res = await fetch(`/api/prompts/${unitId}`, { cache: 'no-store' });
     if (!res.ok) throw new Error('Failed to load prompts');
     const data: Prompt[] = await res.json();
-    return shuffle(data, `${id}-${unitId}`);
-  }, [shuffle, unitId]);
+    return data;
+  }, [unitId]);
 
   const fetchProgress = useCallback(async (id: string) => {
     const res = await fetch(`/api/progress/${unitId}?deviceId=${id}`, { cache: 'no-store' });
@@ -83,12 +68,18 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
     try {
       setLoading(true);
       setError(null);
-      const shuffled = await fetchPromptsData(deviceId);
-      setPrompts(shuffled);
-      setPromptIndex(shuffled.length > 0 ? 0 : -1);
-      if (shuffled.length > 0) {
+      const data = await fetchPromptsData();
+      setPrompts(data);
+      setPromptIndex(data.length > 0 ? 0 : -1);
+      if (data.length > 0) {
         setDone(false);
-        loadPrompt(shuffled, 0);
+        loadPrompt(data, 0);
+      }
+      try {
+        localStorage.removeItem(`unit-progress:${unitId}`);
+        localStorage.removeItem(`unit-prompts:${unitId}`);
+      } catch {
+        // ignore
       }
     } catch (e: any) {
       setError(e?.message || 'Failed to load prompts');
@@ -96,7 +87,7 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
       setLoading(false);
       setInputText('');
     }
-  }, [deviceId, fetchPromptsData, loadPrompt]);
+  }, [fetchPromptsData, loadPrompt, unitId]);
 
   useEffect(() => {
     if (!deviceId) return;
@@ -105,14 +96,33 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
       try {
         setLoading(true);
         setError(null);
-        const shuffled = await fetchPromptsData(deviceId);
+        const data = await fetchPromptsData();
         if (!alive) return;
-        setPrompts(shuffled);
-        const idx = shuffled.length > 0 ? 0 : -1;
+        setPrompts(data);
+        try { localStorage.removeItem(`unit-prompts:${unitId}`); } catch { /* cleanup old data */ }
+        let idx = data.length > 0 ? 0 : -1;
+        let doneFromStorage = false;
+        try {
+          const raw = localStorage.getItem(`unit-progress:${unitId}`);
+          if (raw) {
+            const parsed = JSON.parse(raw);
+            if (parsed && typeof parsed.current === 'number') {
+              const stored = Math.floor(parsed.current);
+              if (stored >= data.length) {
+                doneFromStorage = true;
+                idx = Math.max(data.length - 1, 0);
+              } else if (stored > 0) {
+                idx = Math.min(stored - 1, data.length - 1);
+              }
+            }
+          }
+        } catch { /* ignore */ }
         setPromptIndex(idx);
-        if (idx === 0) {
+        if (doneFromStorage) {
+          setDone(true);
+        } else if (idx >= 0) {
           setDone(false);
-          loadPrompt(shuffled, 0);
+          loadPrompt(data, idx);
         }
       } catch (e: any) {
         if (!alive) return;
@@ -124,29 +134,13 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
       }
     })();
     return () => { alive = false; };
-  }, [deviceId, fetchPromptsData, loadPrompt]);
-
-  useEffect(() => {
-    if (!deviceId || prompts.length === 0) return;
-    let alive = true;
-    (async () => {
-      try {
-        const progress = await fetchProgress(deviceId);
-        if (!alive || !progress) return;
-        setPromptIndex(progress.currentPrompt);
-        setDone(progress.completed);
-        if (!progress.completed && progress.currentPrompt < prompts.length) {
-          loadPrompt(prompts, progress.currentPrompt);
-        }
-      } catch {
-        /* ignore */
-      }
-    })();
-    return () => { alive = false; };
-  }, [deviceId, prompts, fetchProgress, loadPrompt]);
+  }, [fetchPromptsData, loadPrompt, unitId]);
 
   // keep header progress in sync
   useEffect(() => {
+    if (loading) {
+      return () => { clearProgress(); };
+    }
     const total = prompts.length;
     const current = done ? total : (promptIndex >= 0 ? promptIndex + 1 : 0);
     setProgress(current, total);
@@ -161,7 +155,7 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
       // ignore
     }
     return () => { /* on unmount */ clearProgress(); };
-  }, [done, promptIndex, prompts.length, unitId, setProgress, clearProgress]);
+  }, [loading, done, promptIndex, prompts.length, unitId, setProgress, clearProgress]);
 
   // Dynamic viewport height for mobile browsers
   useEffect(() => {
@@ -182,14 +176,13 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
   const nativeNorm = useCallback((s: string) => s.normalize('NFKC').trim(), []);
   const romanNorm = useCallback((s: string) => s.normalize('NFKC').trim().toLowerCase().replace(/[^a-z0-9]/g, ''), []);
   const isValid = useCallback(() => {
-    const reverse = promptIndex % 2 === 1;
     if (reverse) {
       // User types the native script
       return nativeNorm(prompt) === nativeNorm(inputText);
     }
     // User types the romanization; ignore spaces, hyphens, punctuation
     return romanNorm(answer) === romanNorm(inputText);
-  }, [answer, inputText, nativeNorm, romanNorm, prompt, promptIndex]);
+  }, [answer, inputText, nativeNorm, romanNorm, prompt, reverse]);
 
   const next = useCallback(() => {
     const idx = promptIndex + 1;
@@ -216,7 +209,7 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
     }
   }, [isValid, showFeedback]);
 
-  const shown = useMemo(() => (promptIndex % 2 === 1 ? answer : prompt), [answer, prompt, promptIndex]);
+  const shown = useMemo(() => (reverse ? answer : prompt), [answer, prompt, reverse]);
 
   // Create prompt form (optional, for quick authoring)
   const [newContent, setNewContent] = useState('');
@@ -269,28 +262,55 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
         {done ? (
           <div>
             <p>Great job! You finished this unit.</p>
-            <div className="actions" style={{ marginTop: 12, maxWidth: 360 }}>
-              <button className="button button--primary button--lg" onClick={() => { setDone(false); setPromptIndex(0); loadPrompt(prompts, 0); setInputText(''); void saveProgress(0, false); }}>Restart</button>
+            <div className="actions" style={{ marginTop: 12 }}>
+              <button
+                className="button button--primary button--lg"
+                onClick={() => router.back()}
+              >
+                Back
+              </button>
+              <button
+                className="button button--ghost button--lg"
+                onClick={() => {
+                  setDone(false);
+                  setPromptIndex(0);
+                  loadPrompt(prompts, 0);
+                  setInputText('');
+                }}
+              >
+                Restart
+              </button>
             </div>
           </div>
         ) : (
-          <div className="prompt">{shown}</div>
+          <div>
+            <button
+              className="backbtn"
+              onClick={() => setReverse((r) => !r)}
+              style={{ marginBottom: 12 }}
+            >
+              {reverse ? 'Roman → Script' : 'Script → Roman'}
+            </button>
+            <div className="prompt">{shown}</div>
+          </div>
         )}
       </div>
-      <div className="bottom-bar">
-        <div className="bottom-inner">
-          <input
-            ref={inputRef}
-            className={`input input--lg ${invalid ? 'input--error shake' : ''}`}
-            autoFocus
-            placeholder={promptIndex % 2 === 1 ? 'Type the script' : 'Type the romanization'}
-            value={inputText}
-            onChange={(e) => setInputText(e.target.value)}
-            onKeyDown={(e) => { if (e.key === 'Enter' && inputText) onSubmit(); }}
-          />
-          <button className="button button--primary button--lg" disabled={!inputText} onClick={onSubmit}>Submit</button>
+      {!done && (
+        <div className="bottom-bar">
+          <div className="bottom-inner">
+            <input
+              ref={inputRef}
+              className={`input input--lg ${invalid ? 'input--error shake' : ''}`}
+              autoFocus
+              placeholder={reverse ? 'Type the script' : 'Type the romanization'}
+              value={inputText}
+              onChange={(e) => setInputText(e.target.value)}
+              onKeyDown={(e) => { if (e.key === 'Enter' && inputText) onSubmit(); }}
+            />
+            <button className="button button--primary button--lg" disabled={!inputText} onClick={onSubmit}>Submit</button>
+          </div>
         </div>
-      </div>
+      )}
       <Feedback
         open={!!showFeedback}
         type={showFeedback === 'success' ? 'success' : showFeedback === 'reveal' ? 'info' : 'error'}
@@ -312,7 +332,6 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
           }
         }}
         onSecondary={showFeedback === 'success' || showFeedback === 'reveal' ? undefined : () => {
-          const reverse = promptIndex % 2 === 1;
           const expected = reverse ? prompt : answer;
           setRevealText(expected);
           setShowFeedback('reveal');
