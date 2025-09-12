@@ -25,13 +25,19 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
   const { set: setProgress, clear: clearProgress } = useProgress();
   const [deviceId, setDeviceId] = useState<string | null>(null);
 
-  const shuffle = useCallback((array: Prompt[]) => {
+  const shuffle = useCallback((array: Prompt[], seed: string) => {
     const arr = array.slice();
-    let currentIndex = arr.length, randomIndex: number | undefined;
-    while (currentIndex !== 0) {
-      randomIndex = Math.floor(Math.random() * currentIndex);
-      currentIndex--;
-      [arr[currentIndex], arr[randomIndex]] = [arr[randomIndex], arr[currentIndex]];
+    let s = 0;
+    for (let i = 0; i < seed.length; i++) {
+      s = (s * 31 + seed.charCodeAt(i)) >>> 0;
+    }
+    const random = () => {
+      s = (s * 1664525 + 1013904223) >>> 0;
+      return s / 4294967296;
+    };
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
     }
     return arr;
   }, []);
@@ -45,11 +51,11 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
     setDeviceId(localStorage.getItem('deviceId'));
   }, []);
 
-  const fetchPromptsData = useCallback(async (): Promise<Prompt[]> => {
+  const fetchPromptsData = useCallback(async (id: string): Promise<Prompt[]> => {
     const res = await fetch(`/api/prompts/${unitId}`, { cache: 'no-store' });
     if (!res.ok) throw new Error('Failed to load prompts');
     const data: Prompt[] = await res.json();
-    return shuffle(data);
+    return shuffle(data, `${id}-${unitId}`);
   }, [shuffle, unitId]);
 
   const fetchProgress = useCallback(async (id: string) => {
@@ -73,10 +79,11 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
   }, [deviceId, unitId]);
 
   const reloadPrompts = useCallback(async () => {
+    if (!deviceId) return;
     try {
       setLoading(true);
       setError(null);
-      const shuffled = await fetchPromptsData();
+      const shuffled = await fetchPromptsData(deviceId);
       setPrompts(shuffled);
       setPromptIndex(shuffled.length > 0 ? 0 : -1);
       if (shuffled.length > 0) {
@@ -89,15 +96,16 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
       setLoading(false);
       setInputText('');
     }
-  }, [fetchPromptsData, loadPrompt]);
+  }, [deviceId, fetchPromptsData, loadPrompt]);
 
   useEffect(() => {
+    if (!deviceId) return;
     let alive = true;
     (async () => {
       try {
         setLoading(true);
         setError(null);
-        const shuffled = await fetchPromptsData();
+        const shuffled = await fetchPromptsData(deviceId);
         if (!alive) return;
         setPrompts(shuffled);
         const idx = shuffled.length > 0 ? 0 : -1;
@@ -116,7 +124,7 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
       }
     })();
     return () => { alive = false; };
-  }, [fetchPromptsData, loadPrompt]);
+  }, [deviceId, fetchPromptsData, loadPrompt]);
 
   useEffect(() => {
     if (!deviceId || prompts.length === 0) return;
