@@ -1,3 +1,4 @@
+import pkg from '../package.json' assert { type: 'json' };
 import type { Counter, Histogram, Registry } from 'prom-client';
 import client from 'prom-client';
 
@@ -6,6 +7,7 @@ const METRICS_ENABLED = !['false', '0'].includes(String(process.env.METRICS_ENAB
 
 type MetricsBundle = {
   enabled: boolean;
+  service: string;
   register: Registry;
   httpRequestsTotal: Counter<string>;
   httpRequestDurationSeconds: Histogram<string>;
@@ -17,7 +19,10 @@ declare global {
 }
 
 function createMetrics(): MetricsBundle {
+  const service = String(process.env.APP_NAME || (pkg as any).name || 'app');
+
   const register = new client.Registry();
+  register.setDefaultLabels({ service });
 
   // Default Node/process metrics
   client.collectDefaultMetrics({ register });
@@ -25,20 +30,24 @@ function createMetrics(): MetricsBundle {
   const httpRequestsTotal = new client.Counter({
     name: 'http_requests_total',
     help: 'Total HTTP requests',
-    labelNames: ['method', 'path', 'status'] as const,
+    labelNames: ['method', 'route', 'status', 'service'] as const,
     registers: [register],
   });
 
   const httpRequestDurationSeconds = new client.Histogram({
     name: 'http_request_duration_seconds',
     help: 'HTTP request duration in seconds',
-    labelNames: ['method', 'path', 'status'] as const,
-    buckets: [0.01, 0.05, 0.1, 0.3, 0.5, 1, 2, 5],
+    labelNames: ['method', 'route', 'status', 'service'] as const,
+    buckets: [
+      0.005, 0.01, 0.025, 0.05, 0.1,
+      0.25, 0.5, 1, 2.5, 5, 10,
+    ],
     registers: [register],
   });
 
   return {
     enabled: true,
+    service,
     register,
     httpRequestsTotal,
     httpRequestDurationSeconds,
@@ -70,8 +79,8 @@ export async function renderMetricsResponse(): Promise<Response> {
   });
 }
 
-function getPathLabel(req: Request, explicitPath?: string): string {
-  if (explicitPath) return explicitPath;
+function getRouteLabel(req: Request, explicitRoute?: string): string {
+  if (explicitRoute) return explicitRoute;
   try {
     const u = new URL(req.url);
     return u.pathname || '/';
@@ -88,8 +97,8 @@ export function withMetrics<Ctx = any>(
     // Short-circuit when disabled
     if (!METRICS_ENABLED || !metrics) return handler(req, context);
 
-    const path = getPathLabel(req, opts?.route);
-    if (path === '/metrics') {
+    const route = getRouteLabel(req, opts?.route);
+    if (route === '/metrics') {
       return handler(req, context);
     }
 
@@ -101,8 +110,8 @@ export function withMetrics<Ctx = any>(
       const status = String((res as any).status ?? 200);
       const method = (req.method || 'GET').toUpperCase();
 
-      metrics.httpRequestsTotal.inc({ method, path, status });
-      metrics.httpRequestDurationSeconds.observe({ method, path, status }, duration);
+      metrics.httpRequestsTotal.inc({ method, route, status, service: metrics.service });
+      metrics.httpRequestDurationSeconds.observe({ method, route, status, service: metrics.service }, duration);
 
       return res;
     } catch (err) {
@@ -110,8 +119,8 @@ export function withMetrics<Ctx = any>(
       const duration = Number(end - start) / 1e9; // seconds
       const method = (req.method || 'GET').toUpperCase();
       // Count as 500 on thrown error
-      metrics.httpRequestsTotal.inc({ method, path, status: '500' });
-      metrics.httpRequestDurationSeconds.observe({ method, path, status: '500' }, duration);
+      metrics.httpRequestsTotal.inc({ method, route, status: '500', service: metrics.service });
+      metrics.httpRequestDurationSeconds.observe({ method, route, status: '500', service: metrics.service }, duration);
       throw err;
     }
   };
