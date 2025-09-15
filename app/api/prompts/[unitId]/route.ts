@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
+import { withMetrics } from '@/lib/metrics';
 
-export async function GET(_req: Request, context: { params: Promise<{ unitId: string }> }) {
+async function handler(_req: Request, context: { params: Promise<{ unitId: string }> }) {
   const { unitId: unitIdParam } = await context.params;
   const unitId = Number(unitIdParam);
   if (Number.isNaN(unitId)) return NextResponse.json({ error: 'Invalid unitId' }, { status: 400 });
@@ -12,4 +13,6 @@ export async function GET(_req: Request, context: { params: Promise<{ unitId: st
   if (!unit) return NextResponse.json({ error: 'Not found' }, { status: 404 });
   return NextResponse.json(unit.prompts);
 }
+
+export const GET = withMetrics(handler, { route: '/api/prompts/[unitId]' });
 

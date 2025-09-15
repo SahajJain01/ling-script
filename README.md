@@ -83,6 +83,16 @@ bun run db:reset
 
 Health check: `GET /api/health`
 
+## Metrics
+
+- Endpoint: `GET /metrics` (no auth). Returns Prometheus text format with default Node/process metrics and custom HTTP metrics.
+- Enable/disable: set `METRICS_ENABLED=true|false` (default `true`). When disabled, `GET /metrics` returns `404` and request instrumentation is a no-op.
+- Labels: `service` is set from `APP_NAME` or `package.json` name. HTTP metrics are labeled by `method`, `route`, `status`, and `service`.
+- Counters/Histograms:
+  - `http_requests_total{method,route,status,service}`
+  - `http_request_duration_seconds{method,route,status,service}` with sensible buckets
+- Note: Place a reverse proxy rule to block public access to `/metrics`. It is intended for internal scraping by Prometheus.
+
 ## API Cheatsheet
 
 - `GET /api/langs` — list languages

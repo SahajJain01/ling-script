@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
+import { withMetrics } from '@/lib/metrics';
 
-export async function POST(req: Request) {
+async function handler(req: Request) {
   const body = await req.json();
   if (!body?.name || body.langId == null) {
     return NextResponse.json({ error: 'name and langId are required' }, { status: 400 });
@@ -11,4 +12,6 @@ export async function POST(req: Request) {
   });
   return NextResponse.json(created, { status: 201 });
 }
+
+export const POST = withMetrics(handler, { route: '/api/create/unit' });
 
