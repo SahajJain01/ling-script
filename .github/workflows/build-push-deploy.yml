@@ -75,75 +75,81 @@ jobs:
         env:
           IMAGE_TAGS: ${{ needs.build-and-push.outputs.image_tags }}
         run: |
-          python3 - <<'PY2'
-          import os
-          tags = [line.strip() for line in os.environ.get("IMAGE_TAGS", "").splitlines() if line.strip()]
-          deploy = next((t for t in tags if t.endswith(":latest")), tags[0] if tags else "")
-          if not deploy:
-              raise SystemExit("No image tag found to deploy")
-          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as fh:
-              fh.write(f"deploy_tag={deploy}\n")
-          PY2
+          set -euo pipefail
+          if [ -z "${IMAGE_TAGS}" ]; then
+            echo "No image tags received from build job" >&2
+            exit 1
+          fi
+          deploy_tag=$(printf '%s\n' "${IMAGE_TAGS}" | grep -E ':latest$' | head -n 1 || true)
+          if [ -z "${deploy_tag}" ]; then
+            deploy_tag=$(printf '%s\n' "${IMAGE_TAGS}" | head -n 1)
+          fi
+          if [ -z "${deploy_tag}" ]; then
+            echo "No image tag found to deploy" >&2
+            exit 1
+          fi
+          echo "deploy_tag=${deploy_tag}" >> "${GITHUB_OUTPUT}"
 
-                - name: Prepare SSH
-                  env:
-                    NIX_SSH_HOST: ${{ secrets.NIX_SSH_HOST }}
-                    NIX_SSH_KEY: ${{ secrets.NIX_SSH_KEY }}
-                  run: |
-                    mkdir -p ~/.ssh
-                    chmod 700 ~/.ssh
-                    ssh-keyscan -H "$NIX_SSH_HOST" >> ~/.ssh/known_hosts
-                    echo "$NIX_SSH_KEY" | tr -d '\r' > ~/.ssh/id_ci
-                    chmod 600 ~/.ssh/id_ci
+      - name: Prepare SSH
+        env:
+          NIX_SSH_HOST: ${{ secrets.NIX_SSH_HOST }}
+          NIX_SSH_KEY: ${{ secrets.NIX_SSH_KEY }}
+        run: |
+          mkdir -p ~/.ssh
+          chmod 700 ~/.ssh
+          ssh-keyscan -H "${NIX_SSH_HOST}" >> ~/.ssh/known_hosts
+          echo "${NIX_SSH_KEY}" | tr -d '\r' > ~/.ssh/id_ci
+          chmod 600 ~/.ssh/id_ci
 
-                - name: Pre-pull image on remote (retry)
-                  env:
-                    NIX_SSH_USER: ${{ secrets.NIX_SSH_USER }}
-                    NIX_SSH_HOST: ${{ secrets.NIX_SSH_HOST }}
-                  run: |
-                    ssh -i ~/.ssh/id_ci \
-                      -o StrictHostKeyChecking=yes \
-                      -o UserKnownHostsFile=~/.ssh/known_hosts \
-                      "${NIX_SSH_USER}@${NIX_SSH_HOST}" \
-                      DEPLOY_IMAGE="${{ steps.image.outputs.deploy_tag }}" 'bash -s' <<'EOF'
-                    set -eo pipefail
-                    IMAGE="${DEPLOY_IMAGE}"
-                    if [ -z "$IMAGE" ]; then
-                      echo "No image tag provided"
-                      exit 1
-                    fi
-                    for attempt in $(seq 1 8); do
-                      if sudo docker pull "$IMAGE"; then
-                        echo "Pulled $IMAGE"
-                        exit 0
-                      fi
-                      echo "Pull failed (attempt $attempt), sleeping 15s..."
-                      sleep 15
-                    done
-                    echo "Failed to pull $IMAGE after retries"
-                    exit 1
+      - name: Pre-pull image on remote (retry)
+        env:
+          NIX_SSH_USER: ${{ secrets.NIX_SSH_USER }}
+          NIX_SSH_HOST: ${{ secrets.NIX_SSH_HOST }}
+        run: |
+          set -euo pipefail
+          DEPLOY_IMAGE="${{ steps.image.outputs.deploy_tag }}"
+          if [ -z "${DEPLOY_IMAGE}" ]; then
+            echo "No image tag provided" >&2
+            exit 1
+          fi
+          ssh -i ~/.ssh/id_ci \
+            -o StrictHostKeyChecking=yes \
+            -o UserKnownHostsFile=~/.ssh/known_hosts \
+            "${NIX_SSH_USER}@${NIX_SSH_HOST}" \
+            DEPLOY_IMAGE="${DEPLOY_IMAGE}" 'bash -s' <<'EOF'
+          set -eo pipefail
+          for attempt in $(seq 1 8); do
+            if sudo docker pull "${DEPLOY_IMAGE}"; then
+              echo "Pulled ${DEPLOY_IMAGE}"
+              exit 0
+            fi
+            echo "Pull failed (attempt $attempt), sleeping 15s..."
+            sleep 15
+          done
+          echo "Failed to pull ${DEPLOY_IMAGE} after retries"
+          exit 1
           EOF
 
-                - name: Restart docker-lingscript on remote
-                  env:
-                    NIX_SSH_USER: ${{ secrets.NIX_SSH_USER }}
-                    NIX_SSH_HOST: ${{ secrets.NIX_SSH_HOST }}
-                  run: |
-                    ssh -i ~/.ssh/id_ci \
-                      -o StrictHostKeyChecking=yes \
-                      -o UserKnownHostsFile=~/.ssh/known_hosts \
-                      "${NIX_SSH_USER}@${NIX_SSH_HOST}" <<'EOF'
-                    set -eo pipefail
-                    sudo systemctl restart docker-lingscript
-                    for attempt in $(seq 1 6); do
-                      sleep 10
-                      if sudo systemctl is-active --quiet docker-lingscript; then
-                        exit 0
-                      fi
-                      echo "Service not active yet (attempt $attempt)"
-                    done
-                    sudo systemctl status docker-lingscript --no-pager
-                    exit 1
+      - name: Restart docker-lingscript on remote
+        env:
+          NIX_SSH_USER: ${{ secrets.NIX_SSH_USER }}
+          NIX_SSH_HOST: ${{ secrets.NIX_SSH_HOST }}
+        run: |
+          set -euo pipefail
+          ssh -i ~/.ssh/id_ci \
+            -o StrictHostKeyChecking=yes \
+            -o UserKnownHostsFile=~/.ssh/known_hosts \
+            "${NIX_SSH_USER}@${NIX_SSH_HOST}" <<'EOF'
+          set -eo pipefail
+          sudo systemctl restart docker-lingscript
+          for attempt in $(seq 1 6); do
+            sleep 10
+            if sudo systemctl is-active --quiet docker-lingscript; then
+              exit 0
+            fi
+            echo "Service not active yet (attempt $attempt)"
+          done
+          sudo systemctl status docker-lingscript --no-pager
+          exit 1
           EOF
-
 
