@@ -70,6 +70,21 @@ jobs:
     runs-on: ubuntu-latest
     needs: build-and-push
     steps:
+      - name: Select deploy image tag
+        id: image
+        env:
+          IMAGE_TAGS: ${{ needs.build-and-push.outputs.image_tags }}
+        run: |
+          python3 - <<'PY2'
+import os
+tags = [line.strip() for line in os.environ.get("IMAGE_TAGS", "").splitlines() if line.strip()]
+deploy = next((t for t in tags if t.endswith(":latest")), tags[0] if tags else "")
+if not deploy:
+    raise SystemExit("No image tag found to deploy")
+with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as fh:
+    fh.write(f"deploy_tag={deploy}\n")
+PY2
+
       - name: Prepare SSH
         env:
           NIX_SSH_HOST: ${{ secrets.NIX_SSH_HOST }}
@@ -77,11 +92,37 @@ jobs:
         run: |
           mkdir -p ~/.ssh
           chmod 700 ~/.ssh
-          # Add host to known_hosts for strict checking
           ssh-keyscan -H "$NIX_SSH_HOST" >> ~/.ssh/known_hosts
-          # Write private key
           echo "$NIX_SSH_KEY" | tr -d '\r' > ~/.ssh/id_ci
           chmod 600 ~/.ssh/id_ci
+
+      - name: Pre-pull image on remote (retry)
+        env:
+          NIX_SSH_USER: ${{ secrets.NIX_SSH_USER }}
+          NIX_SSH_HOST: ${{ secrets.NIX_SSH_HOST }}
+        run: |
+          ssh -i ~/.ssh/id_ci \
+            -o StrictHostKeyChecking=yes \
+            -o UserKnownHostsFile=~/.ssh/known_hosts \
+            "${NIX_SSH_USER}@${NIX_SSH_HOST}" \
+            DEPLOY_IMAGE="${{ steps.image.outputs.deploy_tag }}" 'bash -s' <<'EOF'
+          set -eo pipefail
+          IMAGE="${DEPLOY_IMAGE}"
+          if [ -z "$IMAGE" ]; then
+            echo "No image tag provided"
+            exit 1
+          fi
+          for attempt in $(seq 1 8); do
+            if sudo docker pull "$IMAGE"; then
+              echo "Pulled $IMAGE"
+              exit 0
+            fi
+            echo "Pull failed (attempt $attempt), sleeping 15s..."
+            sleep 15
+          done
+          echo "Failed to pull $IMAGE after retries"
+          exit 1
+EOF
 
       - name: Restart docker-lingscript on remote
         env:
@@ -91,5 +132,18 @@ jobs:
           ssh -i ~/.ssh/id_ci \
             -o StrictHostKeyChecking=yes \
             -o UserKnownHostsFile=~/.ssh/known_hosts \
-            "${NIX_SSH_USER}@${NIX_SSH_HOST}" \
-            'sudo systemctl restart docker-lingscript'
+            "${NIX_SSH_USER}@${NIX_SSH_HOST}" <<'EOF'
+          set -eo pipefail
+          sudo systemctl restart docker-lingscript
+          for attempt in $(seq 1 6); do
+            sleep 10
+            if sudo systemctl is-active --quiet docker-lingscript; then
+              exit 0
+            fi
+            echo "Service not active yet (attempt $attempt)"
+          done
+          sudo systemctl status docker-lingscript --no-pager
+          exit 1
+EOF
+
+
