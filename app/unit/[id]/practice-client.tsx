@@ -7,7 +7,7 @@ import { useProgress } from '@/components/ProgressProvider';
 import { useScriptDirection } from '@/components/ScriptDirectionProvider';
 import Feedback from '@/components/Feedback';
 
-type Prompt = { content: string; answer: string };
+type Prompt = { content: string; answer: string; notes?: string | null };
 
 export default function PracticeClient({ unitId }: { unitId: number }) {
   const [loading, setLoading] = useState(true);
@@ -16,6 +16,7 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
   const [promptIndex, setPromptIndex] = useState(-1);
   const [prompt, setPrompt] = useState('');
   const [answer, setAnswer] = useState('');
+  const [notes, setNotes] = useState<string | null>(null);
   const [inputText, setInputText] = useState('');
   const { reverse } = useScriptDirection(); // false: Script -> Roman, true: Roman -> Script
   const [done, setDone] = useState(false);
@@ -31,6 +32,7 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
   const loadPrompt = useCallback((arr: Prompt[], idx: number) => {
     setPrompt(arr[idx]?.content ?? '');
     setAnswer(arr[idx]?.answer ?? '');
+    setNotes(arr[idx]?.notes ?? null);
   }, []);
 
   const fetchPromptsData = useCallback(async (): Promise<Prompt[]> => {
@@ -50,6 +52,8 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
       if (data.length > 0) {
         setDone(false);
         loadPrompt(data, 0);
+      } else {
+        setNotes(null);
       }
       try {
         localStorage.removeItem(`unit-progress:${unitId}`);
@@ -98,6 +102,8 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
         } else if (idx >= 0) {
           setDone(false);
           loadPrompt(data, idx);
+        } else {
+          setNotes(null);
         }
       } catch (e: any) {
         if (!alive) return;
@@ -164,11 +170,14 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
     if (idx >= prompts.length) {
       setDone(true);
       setInputText('');
+      setRevealText('');
+      setNotes(null);
       return;
     }
     setPromptIndex(idx);
     loadPrompt(prompts, idx);
     setInputText('');
+    setRevealText('');
   }, [loadPrompt, promptIndex, prompts]);
 
   const onSubmit = useCallback(() => {
@@ -183,6 +192,37 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
   }, [isValid, showFeedback]);
 
   const shown = useMemo(() => (reverse ? answer : prompt), [answer, prompt, reverse]);
+
+  const buildFeedbackDetails = useCallback((resolvedAnswer: string) => {
+    const noteLines = (notes ?? '').split('\n').map((line) => line.trim()).filter(Boolean);
+    return (
+      <div className="feedback-details">
+        <div className="feedback-line"><strong>Answer:</strong> {resolvedAnswer}</div>
+        {noteLines.map((line, idx) => {
+          const [label, ...rest] = line.split(':');
+          if (rest.length === 0) {
+            return <div key={`${idx}-${line}`} className="feedback-line">{line}</div>;
+          }
+          return (
+            <div key={`${idx}-${label.trim()}`} className="feedback-line">
+              <strong>{`${label.trim()}:`}</strong> {rest.join(':').trim()}
+            </div>
+          );
+        })}
+      </div>
+    );
+  }, [notes]);
+
+  const feedbackMessage = useMemo(() => {
+    if (showFeedback === 'success') {
+      return buildFeedbackDetails(reverse ? prompt : answer);
+    }
+    if (showFeedback === 'reveal') {
+      const resolved = revealText || (reverse ? prompt : answer);
+      return buildFeedbackDetails(resolved);
+    }
+    return null;
+  }, [showFeedback, buildFeedbackDetails, reverse, prompt, answer, revealText]);
 
   // Create prompt form (optional, for quick authoring)
   const [newContent, setNewContent] = useState('');
@@ -299,7 +339,7 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
         open={!!showFeedback}
         type={showFeedback === 'success' ? 'success' : showFeedback === 'reveal' ? 'info' : 'error'}
         title={showFeedback === 'success' ? 'Correct!' : showFeedback === 'reveal' ? 'Answer' : 'Incorrect'}
-        message={showFeedback === 'reveal' ? revealText : undefined}
+        message={feedbackMessage ?? undefined}
         label={showFeedback === 'success' ? 'Next' : showFeedback === 'reveal' ? 'Continue' : 'Try Again'}
         secondaryLabel={showFeedback === 'success' || showFeedback === 'reveal' ? undefined : 'Skip'}
         onClose={() => {
@@ -324,3 +364,12 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
     </div>
   );
 }
+
+
+
+
+
+
+
+
+

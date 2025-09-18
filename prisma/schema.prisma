@@ -11,6 +11,7 @@ model Prompt {
   id      Int   @id @default(autoincrement())
   content String
   answer  String
+  notes   String?
   unit    Unit  @relation(fields: [unitId], references: [id])
   unitId  Int
 }
@@ -28,4 +29,6 @@ model Lang {
   name  String
   units Unit[]
 }
+
+
 

@@ -1,0 +1,1790 @@
+{
+  "name": "Japanese",
+  "units": [
+    {
+      "name": "N5 - Basic Greetings",
+      "prompts": [
+        {
+          "content": "こんにちは",
+          "answer": "konnichiwa",
+          "notes": "Hiragana: こんにちは\nMeaning: hello, good day, good afternoon"
+        },
+        {
+          "content": "おはようございます",
+          "answer": "ohayou gozaimasu",
+          "notes": "Hiragana: おはようございます\nMeaning: good morning"
+        },
+        {
+          "content": "こんばんは",
+          "answer": "konbanwa",
+          "notes": "Hiragana: こんばんは\nMeaning: good evening"
+        },
+        {
+          "content": "さようなら",
+          "answer": "sayounara",
+          "notes": "Hiragana: さようなら\nMeaning: farewell, adieu, goodbye"
+        },
+        {
+          "content": "おやすみなさい",
+          "answer": "oyasuminasai",
+          "notes": "Hiragana: おやすみなさい\nMeaning: good night"
+        },
+        {
+          "content": "ありがとうございます",
+          "answer": "arigatou gozaimasu",
+          "notes": "Hiragana: ありがとうございます\nMeaning: thank you"
+        },
+        {
+          "content": "どういたしまして",
+          "answer": "douitashimashite",
+          "notes": "Hiragana: どういたしまして\nMeaning: you're welcome, don't mention it, not at all"
+        },
+        {
+          "content": "すみません",
+          "answer": "sumimasen",
+          "notes": "Hiragana: すみません\nMeaning: excuse me, pardon me, I'm sorry"
+        },
+        {
+          "content": "ごめんなさい",
+          "answer": "gomennasai",
+          "notes": "Hiragana: ごめんなさい\nMeaning: I'm sorry, my apologies, excuse me"
+        },
+        {
+          "content": "おめでとう",
+          "answer": "omedetou",
+          "notes": "Hiragana: おめでとう\nMeaning: congratulations!, well done!, best wishes!"
+        },
+        {
+          "content": "いらっしゃいませ",
+          "answer": "irasshaimase",
+          "notes": "Hiragana: いらっしゃいませ\nMeaning: welcome"
+        },
+        {
+          "content": "はじめまして",
+          "answer": "hajimemashite",
+          "notes": "Hiragana: はじめまして\nMeaning: nice to meet you, I'm glad to make your acquaintance, how do you do?"
+        },
+        {
+          "content": "お元気ですか",
+          "answer": "ogenki desu ka",
+          "notes": "Hiragana: おげんきですか\nMeaning: how are you?"
+        },
+        {
+          "content": "はい",
+          "answer": "hai",
+          "notes": "Hiragana: はい\nMeaning: yes, that is correct"
+        },
+        {
+          "content": "いいえ",
+          "answer": "iie",
+          "notes": "Hiragana: いいえ\nMeaning: no"
+        },
+        {
+          "content": "お願いします",
+          "answer": "onegaishimasu",
+          "notes": "Hiragana: おねがいします\nMeaning: please"
+        },
+        {
+          "content": "よろしくお願いします",
+          "answer": "yoroshiku onegaishimasu",
+          "notes": "Hiragana: よろしくおねがいします\nMeaning: please remember me, please help me, please treat me well"
+        },
+        {
+          "content": "またね",
+          "answer": "matane",
+          "notes": "Hiragana: またね\nMeaning: bye, see you later"
+        },
+        {
+          "content": "ではまた",
+          "answer": "dewa mata",
+          "notes": "Hiragana: ではまた\nMeaning: see you later, goodbye, sincerely"
+        },
+        {
+          "content": "失礼します",
+          "answer": "shitsurei shimasu",
+          "notes": "Hiragana: しつれいします\nMeaning: excuse me, pardon me, I beg your pardon"
+        }
+      ]
+    },
+    {
+      "name": "N5 - Daily Activities",
+      "prompts": [
+        {
+          "content": "行く",
+          "answer": "iku",
+          "notes": "Hiragana: いく\nMeaning: to go, to move (towards), to head (towards)"
+        },
+        {
+          "content": "来る",
+          "answer": "kuru",
+          "notes": "Hiragana: くる\nMeaning: to come (spatially or temporally), to approach, to arrive"
+        },
+        {
+          "content": "食べる",
+          "answer": "taberu",
+          "notes": "Hiragana: たべる\nMeaning: to eat"
+        },
+        {
+          "content": "飲む",
+          "answer": "nomu",
+          "notes": "Hiragana: のむ\nMeaning: to drink, to swallow, to take (medicine)"
+        },
+        {
+          "content": "見る",
+          "answer": "miru",
+          "notes": "Hiragana: みる\nMeaning: to see, to look, to watch"
+        },
+        {
+          "content": "聞く",
+          "answer": "kiku",
+          "notes": "Hiragana: きく\nMeaning: to hear"
+        },
+        {
+          "content": "読む",
+          "answer": "yomu",
+          "notes": "Hiragana: よむ\nMeaning: to read"
+        },
+        {
+          "content": "書く",
+          "answer": "kaku",
+          "notes": "Hiragana: かく\nMeaning: to write, to compose, to pen"
+        },
+        {
+          "content": "話す",
+          "answer": "hanasu",
+          "notes": "Hiragana: はなす\nMeaning: to talk, to speak, to converse"
+        },
+        {
+          "content": "買う",
+          "answer": "kau",
+          "notes": "Hiragana: かう\nMeaning: to buy, to purchase"
+        },
+        {
+          "content": "寝る",
+          "answer": "neru",
+          "notes": "Hiragana: ねる\nMeaning: to sleep (lying down)"
+        },
+        {
+          "content": "起きる",
+          "answer": "okiru",
+          "notes": "Hiragana: おきる\nMeaning: to get up, to rise, to blaze up (fire)"
+        },
+        {
+          "content": "勉強する",
+          "answer": "benkyou suru",
+          "notes": "Hiragana: べんきょう\nMeaning: study"
+        },
+        {
+          "content": "働く",
+          "answer": "hataraku",
+          "notes": "Hiragana: はたらく\nMeaning: to work, to labor, to labour"
+        },
+        {
+          "content": "遊ぶ",
+          "answer": "asobu",
+          "notes": "Hiragana: あそぶ\nMeaning: to play (games, sports), to enjoy oneself, to have a good time"
+        },
+        {
+          "content": "泳ぐ",
+          "answer": "oyogu",
+          "notes": "Hiragana: およぐ\nMeaning: to swim"
+        },
+        {
+          "content": "走る",
+          "answer": "hashiru",
+          "notes": "Hiragana: はしる\nMeaning: to run"
+        },
+        {
+          "content": "作る",
+          "answer": "tsukuru",
+          "notes": "Hiragana: つくる\nMeaning: to make, to produce, to manufacture"
+        },
+        {
+          "content": "使う",
+          "answer": "tsukau",
+          "notes": "Hiragana: つかう\nMeaning: to use (a tool, method, etc.), to make use of, to put to use"
+        },
+        {
+          "content": "洗う",
+          "answer": "arau",
+          "notes": "Hiragana: あらう\nMeaning: to wash, to cleanse, to rinse"
+        }
+      ]
+    },
+    {
+      "name": "N5 - Numbers & Time",
+      "prompts": [
+        {
+          "content": "一時",
+          "answer": "ichiji",
+          "notes": "Hiragana: いちじ\nMeaning: one o'clock"
+        },
+        {
+          "content": "二時",
+          "answer": "niji",
+          "notes": "Hiragana: にじ\nMeaning: two o'clock"
+        },
+        {
+          "content": "三時",
+          "answer": "sanji",
+          "notes": "Hiragana: さんじ\nMeaning: 3 o'clock"
+        },
+        {
+          "content": "四時",
+          "answer": "yoji",
+          "notes": "Hiragana: よじ\nMeaning: four o'clock"
+        },
+        {
+          "content": "五時",
+          "answer": "goji",
+          "notes": "Hiragana: ごじ\nMeaning: five o'clock"
+        },
+        {
+          "content": "六時",
+          "answer": "rokuji",
+          "notes": "Hiragana: ろくじ\nMeaning: six o'clock"
+        },
+        {
+          "content": "七時",
+          "answer": "shichiji",
+          "notes": "Hiragana: しちじ\nMeaning: seven o'clock"
+        },
+        {
+          "content": "八時",
+          "answer": "hachiji",
+          "notes": "Hiragana: はちじ\nMeaning: eight o'clock"
+        },
+        {
+          "content": "九時",
+          "answer": "kuji",
+          "notes": "Hiragana: くじ\nMeaning: nine o'clock"
+        },
+        {
+          "content": "十時",
+          "answer": "juuji",
+          "notes": "Hiragana: じゅうじ\nMeaning: ten o'clock"
+        },
+        {
+          "content": "十一時",
+          "answer": "juuichiji",
+          "notes": "Hiragana: じゅういちじ\nMeaning: eleven o'clock"
+        },
+        {
+          "content": "十二時",
+          "answer": "juuniji",
+          "notes": "Hiragana: じゅうにじ\nMeaning: twelve o'clock, noon, midnight"
+        },
+        {
+          "content": "半",
+          "answer": "han",
+          "notes": "Hiragana: はん\nMeaning: half, semi-, partial"
+        },
+        {
+          "content": "分",
+          "answer": "fun",
+          "notes": "Hiragana: ぶん\nMeaning: part, portion, share"
+        },
+        {
+          "content": "秒",
+          "answer": "byou",
+          "notes": "Hiragana: びょう\nMeaning: second (unit of time)"
+        },
+        {
+          "content": "今日",
+          "answer": "kyou",
+          "notes": "Hiragana: きょう\nMeaning: today, this day"
+        },
+        {
+          "content": "昨日",
+          "answer": "kinou",
+          "notes": "Hiragana: きのう\nMeaning: yesterday"
+        },
+        {
+          "content": "明日",
+          "answer": "ashita",
+          "notes": "Hiragana: あした\nMeaning: tomorrow"
+        },
+        {
+          "content": "午前",
+          "answer": "gozen",
+          "notes": "Hiragana: ごぜん\nMeaning: morning, a.m."
+        },
+        {
+          "content": "午後",
+          "answer": "gogo",
+          "notes": "Hiragana: ごご\nMeaning: afternoon, p.m."
+        }
+      ]
+    },
+    {
+      "name": "N5 Kanji Practice",
+      "prompts": [
+        {
+          "content": "一",
+          "answer": "ichi",
+          "notes": "Hiragana: いち\nMeaning: one, 1"
+        },
+        {
+          "content": "二",
+          "answer": "ni",
+          "notes": "Hiragana: に\nMeaning: two, 2"
+        },
+        {
+          "content": "三",
+          "answer": "san",
+          "notes": "Hiragana: さん\nMeaning: three, 3"
+        },
+        {
+          "content": "四",
+          "answer": "yon",
+          "notes": "Hiragana: し\nMeaning: four, 4"
+        },
+        {
+          "content": "五",
+          "answer": "go",
+          "notes": "Hiragana: ご\nMeaning: five, 5"
+        },
+        {
+          "content": "六",
+          "answer": "roku",
+          "notes": "Hiragana: ろく\nMeaning: six, 6"
+        },
+        {
+          "content": "七",
+          "answer": "nana",
+          "notes": "Hiragana: しち\nMeaning: seven"
+        },
+        {
+          "content": "八",
+          "answer": "hachi",
+          "notes": "Hiragana: はち\nMeaning: eight, 8"
+        },
+        {
+          "content": "九",
+          "answer": "kyuu",
+          "notes": "Hiragana: きゅう\nMeaning: nine, 9"
+        },
+        {
+          "content": "十",
+          "answer": "juu",
+          "notes": "Hiragana: じゅう\nMeaning: ten, 10"
+        },
+        {
+          "content": "山",
+          "answer": "yama",
+          "notes": "Hiragana: やま\nMeaning: mountain, hill"
+        },
+        {
+          "content": "川",
+          "answer": "kawa",
+          "notes": "Hiragana: かわ\nMeaning: river, stream"
+        },
+        {
+          "content": "田",
+          "answer": "ta",
+          "notes": "Hiragana: た\nMeaning: rice field"
+        },
+        {
+          "content": "口",
+          "answer": "kuchi",
+          "notes": "Hiragana: くち\nMeaning: mouth"
+        },
+        {
+          "content": "目",
+          "answer": "me",
+          "notes": "Hiragana: め\nMeaning: eye, eyeball"
+        },
+        {
+          "content": "耳",
+          "answer": "mimi",
+          "notes": "Hiragana: みみ\nMeaning: ear"
+        },
+        {
+          "content": "手",
+          "answer": "te",
+          "notes": "Hiragana: て\nMeaning: hand, arm"
+        },
+        {
+          "content": "足",
+          "answer": "ashi",
+          "notes": "Hiragana: あし\nMeaning: foot, paw, arm (of an octopus, squid, etc.)"
+        },
+        {
+          "content": "力",
+          "answer": "chikara",
+          "notes": "Hiragana: ちから\nMeaning: force, strength, might"
+        },
+        {
+          "content": "火",
+          "answer": "hi",
+          "notes": "Hiragana: ひ\nMeaning: fire, flame, blaze"
+        }
+      ]
+    },
+    {
+      "name": "N4 - Travel & Directions",
+      "prompts": [
+        {
+          "content": "駅",
+          "answer": "eki",
+          "notes": "Hiragana: えき\nMeaning: railway station, train station"
+        },
+        {
+          "content": "空港",
+          "answer": "kuukou",
+          "notes": "Hiragana: くうこう\nMeaning: airport"
+        },
+        {
+          "content": "地図",
+          "answer": "chizu",
+          "notes": "Hiragana: ちず\nMeaning: map, atlas, chart"
+        },
+        {
+          "content": "左",
+          "answer": "hidari",
+          "notes": "Hiragana: ひだり\nMeaning: left, left-hand side"
+        },
+        {
+          "content": "右",
+          "answer": "migi",
+          "notes": "Hiragana: みぎ\nMeaning: right, right-hand side"
+        },
+        {
+          "content": "前",
+          "answer": "mae",
+          "notes": "Hiragana: ぜん\nMeaning: last (i.e. immediately preceding), previous, ex-"
+        },
+        {
+          "content": "後ろ",
+          "answer": "ushiro",
+          "notes": "Hiragana: うしろ\nMeaning: back, behind, rear"
+        },
+        {
+          "content": "北",
+          "answer": "kita",
+          "notes": "Hiragana: きた\nMeaning: north"
+        },
+        {
+          "content": "南",
+          "answer": "minami",
+          "notes": "Hiragana: みなみ\nMeaning: south"
+        },
+        {
+          "content": "東",
+          "answer": "higashi",
+          "notes": "Hiragana: ひがし\nMeaning: east"
+        },
+        {
+          "content": "西",
+          "answer": "nishi",
+          "notes": "Hiragana: にし\nMeaning: west"
+        },
+        {
+          "content": "信号",
+          "answer": "shingou",
+          "notes": "Hiragana: しんごう\nMeaning: signal, signalling, signaling"
+        },
+        {
+          "content": "交差点",
+          "answer": "kousaten",
+          "notes": "Hiragana: こうさてん\nMeaning: crossing, intersection"
+        },
+        {
+          "content": "バス停",
+          "answer": "basutei",
+          "notes": "Hiragana: バスてい\nMeaning: bus stop"
+        },
+        {
+          "content": "観光",
+          "answer": "kankou",
+          "notes": "Hiragana: かんこう\nMeaning: sightseeing, tourism"
+        },
+        {
+          "content": "道",
+          "answer": "michi",
+          "notes": "Hiragana: みち\nMeaning: road, path, street"
+        },
+        {
+          "content": "角",
+          "answer": "kado",
+          "notes": "Hiragana: かく\nMeaning: angle"
+        },
+        {
+          "content": "橋",
+          "answer": "hashi",
+          "notes": "Hiragana: はし\nMeaning: bridge"
+        },
+        {
+          "content": "地下鉄",
+          "answer": "chikatetsu",
+          "notes": "Hiragana: ちかてつ\nMeaning: subway, metro, underground (railway)"
+        },
+        {
+          "content": "出口",
+          "answer": "deguchi",
+          "notes": "Hiragana: でぐち\nMeaning: exit, way out"
+        }
+      ]
+    },
+    {
+      "name": "N4 - Daily Life",
+      "prompts": [
+        {
+          "content": "家族",
+          "answer": "kazoku",
+          "notes": "Hiragana: かぞく\nMeaning: family"
+        },
+        {
+          "content": "会社",
+          "answer": "kaisha",
+          "notes": "Hiragana: かいしゃ\nMeaning: company, corporation, firm"
+        },
+        {
+          "content": "友達",
+          "answer": "tomodachi",
+          "notes": "Hiragana: ともだち\nMeaning: friend, companion"
+        },
+        {
+          "content": "時間",
+          "answer": "jikan",
+          "notes": "Hiragana: じかん\nMeaning: time"
+        },
+        {
+          "content": "病院",
+          "answer": "byouin",
+          "notes": "Hiragana: びょういん\nMeaning: hospital, clinic, doctor's office"
+        },
+        {
+          "content": "郵便局",
+          "answer": "yuubinkyoku",
+          "notes": "Hiragana: ゆうびんきょく\nMeaning: post office"
+        },
+        {
+          "content": "銀行",
+          "answer": "ginkou",
+          "notes": "Hiragana: ぎんこう\nMeaning: bank, banking institution"
+        },
+        {
+          "content": "学校",
+          "answer": "gakkou",
+          "notes": "Hiragana: がっこう\nMeaning: school"
+        },
+        {
+          "content": "雨",
+          "answer": "ame",
+          "notes": "Hiragana: あめ\nMeaning: rain"
+        },
+        {
+          "content": "晴れ",
+          "answer": "hare",
+          "notes": "Hiragana: はれ\nMeaning: clear weather, fine weather"
+        },
+        {
+          "content": "新聞",
+          "answer": "shinbun",
+          "notes": "Hiragana: しんぶん\nMeaning: newspaper"
+        },
+        {
+          "content": "電話",
+          "answer": "denwa",
+          "notes": "Hiragana: でんわ\nMeaning: telephone call, phone call"
+        },
+        {
+          "content": "料理",
+          "answer": "ryouri",
+          "notes": "Hiragana: りょうり\nMeaning: cooking, cookery, cuisine"
+        },
+        {
+          "content": "散歩",
+          "answer": "sanpo",
+          "notes": "Hiragana: さんぽ\nMeaning: walk, stroll"
+        },
+        {
+          "content": "買い物",
+          "answer": "kaimono",
+          "notes": "Hiragana: かいもの\nMeaning: shopping, purchased goods"
+        },
+        {
+          "content": "部屋",
+          "answer": "heya",
+          "notes": "Hiragana: へや\nMeaning: room, chamber"
+        },
+        {
+          "content": "電気",
+          "answer": "denki",
+          "notes": "Hiragana: でんき\nMeaning: electricity"
+        },
+        {
+          "content": "水",
+          "answer": "mizu",
+          "notes": "Hiragana: みず\nMeaning: water (esp. cool or cold)"
+        },
+        {
+          "content": "料理する",
+          "answer": "ryouri suru",
+          "notes": "Hiragana: りょうり\nMeaning: cooking, cookery, cuisine"
+        },
+        {
+          "content": "掃除する",
+          "answer": "souji suru",
+          "notes": "Hiragana: そうじ\nMeaning: cleaning, sweeping, dusting"
+        }
+      ]
+    },
+    {
+      "name": "N4 - Shopping & Services",
+      "prompts": [
+        {
+          "content": "店",
+          "answer": "mise",
+          "notes": "Hiragana: みせ\nMeaning: store, shop, establishment"
+        },
+        {
+          "content": "値段",
+          "answer": "nedan",
+          "notes": "Hiragana: ねだん\nMeaning: price, cost"
+        },
+        {
+          "content": "安い",
+          "answer": "yasui",
+          "notes": "Hiragana: やすい\nMeaning: cheap, inexpensive"
+        },
+        {
+          "content": "高い",
+          "answer": "takai",
+          "notes": "Hiragana: たかい\nMeaning: high, tall"
+        },
+        {
+          "content": "買う",
+          "answer": "kau",
+          "notes": "Hiragana: かう\nMeaning: to buy, to purchase"
+        },
+        {
+          "content": "売る",
+          "answer": "uru",
+          "notes": "Hiragana: うる\nMeaning: to sell"
+        },
+        {
+          "content": "店員",
+          "answer": "tenin",
+          "notes": "Hiragana: てんいん\nMeaning: employee (of a store), shop assistant, clerk"
+        },
+        {
+          "content": "客",
+          "answer": "kyaku",
+          "notes": "Hiragana: きゃく\nMeaning: guest, visitor"
+        },
+        {
+          "content": "試着",
+          "answer": "shichaku",
+          "notes": "Hiragana: しちゃく\nMeaning: trying on clothes"
+        },
+        {
+          "content": "サイズ",
+          "answer": "saizu",
+          "notes": "Hiragana: サイズ\nMeaning: size"
+        },
+        {
+          "content": "返品",
+          "answer": "henpin",
+          "notes": "Hiragana: へんぴん\nMeaning: returned goods, returning purchased goods"
+        },
+        {
+          "content": "クレジットカード",
+          "answer": "kurejitto kaado",
+          "notes": "Hiragana: クレジットカード\nMeaning: credit card"
+        },
+        {
+          "content": "現金",
+          "answer": "genkin",
+          "notes": "Hiragana: げんきん\nMeaning: cash, ready money, money on hand"
+        },
+        {
+          "content": "領収書",
+          "answer": "ryoushuusho",
+          "notes": "Hiragana: りょうしゅうしょ\nMeaning: formal receipt (of payment; oft. hand-written)"
+        },
+        {
+          "content": "レジ",
+          "answer": "reji",
+          "notes": "Hiragana: レジ\nMeaning: (cash) register"
+        },
+        {
+          "content": "割引",
+          "answer": "waribiki",
+          "notes": "Hiragana: わりびき\nMeaning: discount, reduction, rebate"
+        },
+        {
+          "content": "注文する",
+          "answer": "chuumon suru",
+          "notes": "Hiragana: ちゅうもん\nMeaning: order (for an item)"
+        },
+        {
+          "content": "予約",
+          "answer": "yoyaku",
+          "notes": "Hiragana: よやく\nMeaning: reservation, appointment, booking"
+        },
+        {
+          "content": "サービス",
+          "answer": "saabisu",
+          "notes": "Hiragana: サービス\nMeaning: service, help, assistance"
+        },
+        {
+          "content": "開店",
+          "answer": "kaiten",
+          "notes": "Hiragana: かいてん\nMeaning: opening a new shop"
+        }
+      ]
+    },
+    {
+      "name": "N4 Kanji Practice",
+      "prompts": [
+        {
+          "content": "語",
+          "answer": "go",
+          "notes": "Hiragana: ご\nMeaning: word, term"
+        },
+        {
+          "content": "話",
+          "answer": "hanashi",
+          "notes": "Hiragana: はなし\nMeaning: talk, speech, chat"
+        },
+        {
+          "content": "読",
+          "answer": "yomu",
+          "notes": "Hiragana: どくしょ\nMeaning: reading (books)"
+        },
+        {
+          "content": "書",
+          "answer": "kaku",
+          "notes": "Hiragana: ふみ\nMeaning: letter, note, mail"
+        },
+        {
+          "content": "聞",
+          "answer": "kiku",
+          "notes": "Hiragana: きく\nMeaning: to hear"
+        },
+        {
+          "content": "車",
+          "answer": "kuruma",
+          "notes": "Hiragana: くるま\nMeaning: car, automobile, vehicle"
+        },
+        {
+          "content": "校",
+          "answer": "kou",
+          "notes": "Hiragana: こう\nMeaning: school"
+        },
+        {
+          "content": "長",
+          "answer": "nagai",
+          "notes": "Hiragana: たけ\nMeaning: height, stature"
+        },
+        {
+          "content": "新",
+          "answer": "atarashii",
+          "notes": "Hiragana: しん\nMeaning: new, neo-"
+        },
+        {
+          "content": "間",
+          "answer": "aida",
+          "notes": "Hiragana: あいだ\nMeaning: space (between), gap, interval"
+        },
+        {
+          "content": "題",
+          "answer": "dai",
+          "notes": "Hiragana: だい\nMeaning: title, subject, theme"
+        },
+        {
+          "content": "曜",
+          "answer": "you",
+          "notes": "Hiragana: ようび\nMeaning: day of the week"
+        },
+        {
+          "content": "館",
+          "answer": "kan",
+          "notes": "Hiragana: かん\nMeaning: (large) building, public building, hall"
+        },
+        {
+          "content": "駅",
+          "answer": "eki",
+          "notes": "Hiragana: えき\nMeaning: railway station, train station"
+        },
+        {
+          "content": "試",
+          "answer": "shi",
+          "notes": "Hiragana: し\nMeaning: testing, experiment, test"
+        },
+        {
+          "content": "験",
+          "answer": "ken",
+          "notes": "Hiragana: ためし\nMeaning: trial, test"
+        },
+        {
+          "content": "旅",
+          "answer": "tabi",
+          "notes": "Hiragana: たび\nMeaning: travel, trip, journey"
+        },
+        {
+          "content": "族",
+          "answer": "zoku",
+          "notes": "Hiragana: ぞく\nMeaning: tribe, clan, band"
+        },
+        {
+          "content": "配",
+          "answer": "hai",
+          "notes": "Hiragana: はいたつ\nMeaning: delivery"
+        },
+        {
+          "content": "重",
+          "answer": "juu",
+          "notes": "Hiragana: じゅう\nMeaning: jūbako, multi-tiered food box"
+        }
+      ]
+    },
+    {
+      "name": "N3 - Work & School",
+      "prompts": [
+        {
+          "content": "会議",
+          "answer": "kaigi",
+          "notes": "Hiragana: かいぎ\nMeaning: meeting, conference, session"
+        },
+        {
+          "content": "資料",
+          "answer": "shiryou",
+          "notes": "Hiragana: しりょう\nMeaning: material, materials, data"
+        },
+        {
+          "content": "課長",
+          "answer": "kachou",
+          "notes": "Hiragana: かちょう\nMeaning: section manager, section chief"
+        },
+        {
+          "content": "宿題",
+          "answer": "shukudai",
+          "notes": "Hiragana: しゅくだい\nMeaning: homework, assignment"
+        },
+        {
+          "content": "試験",
+          "answer": "shiken",
+          "notes": "Hiragana: しけん\nMeaning: examination, exam, test"
+        },
+        {
+          "content": "社員",
+          "answer": "shain",
+          "notes": "Hiragana: しゃいん\nMeaning: company employee"
+        },
+        {
+          "content": "上司",
+          "answer": "joushi",
+          "notes": "Hiragana: じょうし\nMeaning: (one's) superior, (one's) boss, the higher-ups"
+        },
+        {
+          "content": "同僚",
+          "answer": "douryou",
+          "notes": "Hiragana: どうりょう\nMeaning: coworker, co-worker, colleague"
+        },
+        {
+          "content": "出張",
+          "answer": "shucchou",
+          "notes": "Hiragana: しゅっちょう\nMeaning: business trip, official trip"
+        },
+        {
+          "content": "給料",
+          "answer": "kyuuryou",
+          "notes": "Hiragana: きゅうりょう\nMeaning: salary, wages, pay"
+        },
+        {
+          "content": "事務所",
+          "answer": "jimusho",
+          "notes": "Hiragana: じむしょ\nMeaning: office"
+        },
+        {
+          "content": "教授",
+          "answer": "kyouju",
+          "notes": "Hiragana: きょうじゅ\nMeaning: professor"
+        },
+        {
+          "content": "研究",
+          "answer": "kenkyuu",
+          "notes": "Hiragana: けんきゅう\nMeaning: research, study, investigation"
+        },
+        {
+          "content": "論文",
+          "answer": "ronbun",
+          "notes": "Hiragana: ろんぶん\nMeaning: thesis, essay, treatise"
+        },
+        {
+          "content": "授業",
+          "answer": "jugyou",
+          "notes": "Hiragana: じゅぎょう\nMeaning: lesson, class, teaching"
+        },
+        {
+          "content": "教室",
+          "answer": "kyoushitsu",
+          "notes": "Hiragana: きょうしつ\nMeaning: classroom, lecture room"
+        },
+        {
+          "content": "出席",
+          "answer": "shusseki",
+          "notes": "Hiragana: しゅっせき\nMeaning: attendance, presence, appearance"
+        },
+        {
+          "content": "欠席",
+          "answer": "kesseki",
+          "notes": "Hiragana: けっせき\nMeaning: absence, non-attendance"
+        },
+        {
+          "content": "成績",
+          "answer": "seiseki",
+          "notes": "Hiragana: せいせき\nMeaning: results, record, grades"
+        },
+        {
+          "content": "提出",
+          "answer": "teishutsu",
+          "notes": "Hiragana: ていしゅつ\nMeaning: presentation (of documents), submission (of an application, report, etc.), production (e.g. of evidence)"
+        }
+      ]
+    },
+    {
+      "name": "N3 - Culture & Entertainment",
+      "prompts": [
+        {
+          "content": "映画",
+          "answer": "eiga",
+          "notes": "Hiragana: えいが\nMeaning: movie, film, motion picture"
+        },
+        {
+          "content": "音楽",
+          "answer": "ongaku",
+          "notes": "Hiragana: おんがく\nMeaning: music"
+        },
+        {
+          "content": "美術館",
+          "answer": "bijutsukan",
+          "notes": "Hiragana: びじゅつかん\nMeaning: art museum, art gallery"
+        },
+        {
+          "content": "博物館",
+          "answer": "hakubutsukan",
+          "notes": "Hiragana: はくぶつかん\nMeaning: museum"
+        },
+        {
+          "content": "舞台",
+          "answer": "butai",
+          "notes": "Hiragana: ぶたい\nMeaning: stage (of a theatre, concert hall, etc.), (stage) performance"
+        },
+        {
+          "content": "小説",
+          "answer": "shousetsu",
+          "notes": "Hiragana: しょうせつ\nMeaning: novel, story, (work of) fiction"
+        },
+        {
+          "content": "漫画",
+          "answer": "manga",
+          "notes": "Hiragana: まんが\nMeaning: cartoon, comic, comic strip"
+        },
+        {
+          "content": "写真",
+          "answer": "shashin",
+          "notes": "Hiragana: しゃしん\nMeaning: photograph, photo, picture"
+        },
+        {
+          "content": "演劇",
+          "answer": "engeki",
+          "notes": "Hiragana: えんげき\nMeaning: drama, theatre, theater"
+        },
+        {
+          "content": "祭り",
+          "answer": "matsuri",
+          "notes": "Hiragana: まつり\nMeaning: festival, feast, matsuri"
+        },
+        {
+          "content": "観客",
+          "answer": "kankyaku",
+          "notes": "Hiragana: かんきゃく\nMeaning: spectator, audience"
+        },
+        {
+          "content": "歌手",
+          "answer": "kashu",
+          "notes": "Hiragana: かしゅ\nMeaning: singer"
+        },
+        {
+          "content": "俳優",
+          "answer": "haiyuu",
+          "notes": "Hiragana: はいゆう\nMeaning: actor, actress, player"
+        },
+        {
+          "content": "楽器",
+          "answer": "gakki",
+          "notes": "Hiragana: がっき\nMeaning: musical instrument"
+        },
+        {
+          "content": "作家",
+          "answer": "sakka",
+          "notes": "Hiragana: さっか\nMeaning: author, writer, novelist"
+        },
+        {
+          "content": "踊り",
+          "answer": "odori",
+          "notes": "Hiragana: おどり\nMeaning: dance"
+        },
+        {
+          "content": "上映",
+          "answer": "jouei",
+          "notes": "Hiragana: じょうえい\nMeaning: screening (a movie), showing"
+        },
+        {
+          "content": "画家",
+          "answer": "gaka",
+          "notes": "Hiragana: がか\nMeaning: painter, artist"
+        },
+        {
+          "content": "展覧会",
+          "answer": "tenrankai",
+          "notes": "Hiragana: てんらんかい\nMeaning: exhibition"
+        },
+        {
+          "content": "芸術",
+          "answer": "geijutsu",
+          "notes": "Hiragana: げいじゅつ\nMeaning: art, the arts"
+        }
+      ]
+    },
+    {
+      "name": "N3 Kanji Practice",
+      "prompts": [
+        {
+          "content": "発",
+          "answer": "hatsu",
+          "notes": "Hiragana: はつ\nMeaning: departure, departing from ..., leaving at (e.g. 8:30)"
+        },
+        {
+          "content": "表",
+          "answer": "hyou",
+          "notes": "Hiragana: おもて\nMeaning: surface"
+        },
+        {
+          "content": "業",
+          "answer": "gyou",
+          "notes": "Hiragana: ぎょう\nMeaning: work, business, company"
+        },
+        {
+          "content": "集",
+          "answer": "shuu",
+          "notes": "Hiragana: しゅう\nMeaning: collection, compilation"
+        },
+        {
+          "content": "研",
+          "answer": "ken",
+          "notes": "Hiragana: けんきゅう\nMeaning: research, study, investigation"
+        },
+        {
+          "content": "究",
+          "answer": "kyuu",
+          "notes": "Hiragana: きゅうきょく\nMeaning: ultimate, final, last"
+        },
+        {
+          "content": "練",
+          "answer": "ren",
+          "notes": "Hiragana: れんしゅう\nMeaning: practice, training, drill"
+        },
+        {
+          "content": "習",
+          "answer": "shuu",
+          "notes": "Hiragana: ならう\nMeaning: to take lessons in, to be taught, to learn (from a teacher)"
+        },
+        {
+          "content": "試",
+          "answer": "shi",
+          "notes": "Hiragana: し\nMeaning: testing, experiment, test"
+        },
+        {
+          "content": "験",
+          "answer": "ken",
+          "notes": "Hiragana: ためし\nMeaning: trial, test"
+        },
+        {
+          "content": "館",
+          "answer": "kan",
+          "notes": "Hiragana: かん\nMeaning: (large) building, public building, hall"
+        },
+        {
+          "content": "港",
+          "answer": "kou",
+          "notes": "Hiragana: みなと\nMeaning: harbour, harbor, port"
+        },
+        {
+          "content": "橋",
+          "answer": "hashi",
+          "notes": "Hiragana: はし\nMeaning: bridge"
+        },
+        {
+          "content": "階",
+          "answer": "kai",
+          "notes": "Hiragana: かい\nMeaning: storey, story, floor"
+        },
+        {
+          "content": "段",
+          "answer": "dan",
+          "notes": "Hiragana: だん\nMeaning: step, stair, rung"
+        },
+        {
+          "content": "農",
+          "answer": "nou",
+          "notes": "Hiragana: のう\nMeaning: farming, agriculture"
+        },
+        {
+          "content": "漁",
+          "answer": "gyo",
+          "notes": "Hiragana: りょう\nMeaning: fishing, gathering seafood (e.g. clams, seaweed)"
+        },
+        {
+          "content": "額",
+          "answer": "gaku",
+          "notes": "Hiragana: がく\nMeaning: (picture) frame, framed picture"
+        },
+        {
+          "content": "球",
+          "answer": "kyuu",
+          "notes": "Hiragana: たま\nMeaning: ball, sphere, globe"
+        },
+        {
+          "content": "討",
+          "answer": "tou",
+          "notes": "Hiragana: とうろん\nMeaning: debate, discussion"
+        }
+      ]
+    },
+    {
+      "name": "N2 - Society & Media",
+      "prompts": [
+        {
+          "content": "政治",
+          "answer": "seiji",
+          "notes": "Hiragana: せいじ\nMeaning: politics, government"
+        },
+        {
+          "content": "経済",
+          "answer": "keizai",
+          "notes": "Hiragana: けいざい\nMeaning: economy, economics"
+        },
+        {
+          "content": "報道",
+          "answer": "houdou",
+          "notes": "Hiragana: ほうどう\nMeaning: report (of news), reporting, news"
+        },
+        {
+          "content": "選挙",
+          "answer": "senkyo",
+          "notes": "Hiragana: せんきょ\nMeaning: election"
+        },
+        {
+          "content": "文化",
+          "answer": "bunka",
+          "notes": "Hiragana: ぶんか\nMeaning: culture, civilization, civilisation"
+        },
+        {
+          "content": "新聞",
+          "answer": "shinbun",
+          "notes": "Hiragana: しんぶん\nMeaning: newspaper"
+        },
+        {
+          "content": "雑誌",
+          "answer": "zasshi",
+          "notes": "Hiragana: ざっし\nMeaning: magazine, journal, periodical"
+        },
+        {
+          "content": "広告",
+          "answer": "koukoku",
+          "notes": "Hiragana: こうこく\nMeaning: advertisement, advertising"
+        },
+        {
+          "content": "企業",
+          "answer": "kigyou",
+          "notes": "Hiragana: きぎょう\nMeaning: enterprise, business, company"
+        },
+        {
+          "content": "景気",
+          "answer": "keiki",
+          "notes": "Hiragana: けいき\nMeaning: business conditions, the market, economic activity"
+        },
+        {
+          "content": "事件",
+          "answer": "jiken",
+          "notes": "Hiragana: じけん\nMeaning: event, affair, incident"
+        },
+        {
+          "content": "裁判",
+          "answer": "saiban",
+          "notes": "Hiragana: さいばん\nMeaning: trial, judgement, judgment"
+        },
+        {
+          "content": "世論",
+          "answer": "yoron",
+          "notes": "Hiragana: よろん\nMeaning: public opinion, popular voice, public sentiment"
+        },
+        {
+          "content": "消費",
+          "answer": "shouhi",
+          "notes": "Hiragana: しょうひ\nMeaning: consumption, expenditure, spending"
+        },
+        {
+          "content": "国際",
+          "answer": "kokusai",
+          "notes": "Hiragana: こくさい\nMeaning: international"
+        },
+        {
+          "content": "政策",
+          "answer": "seisaku",
+          "notes": "Hiragana: せいさく\nMeaning: political measures, policy"
+        },
+        {
+          "content": "行政",
+          "answer": "gyousei",
+          "notes": "Hiragana: ぎょうせい\nMeaning: executive, government"
+        },
+        {
+          "content": "立法",
+          "answer": "rippou",
+          "notes": "Hiragana: りっぽう\nMeaning: legislation, lawmaking"
+        },
+        {
+          "content": "外交",
+          "answer": "gaikou",
+          "notes": "Hiragana: がいこう\nMeaning: diplomacy"
+        },
+        {
+          "content": "議会",
+          "answer": "gikai",
+          "notes": "Hiragana: ぎかい\nMeaning: congress, parliament, diet"
+        }
+      ]
+    },
+    {
+      "name": "N2 - Technology & Science",
+      "prompts": [
+        {
+          "content": "科学",
+          "answer": "kagaku",
+          "notes": "Hiragana: かがく\nMeaning: science"
+        },
+        {
+          "content": "技術",
+          "answer": "gijutsu",
+          "notes": "Hiragana: ぎじゅつ\nMeaning: technology, engineering"
+        },
+        {
+          "content": "研究",
+          "answer": "kenkyuu",
+          "notes": "Hiragana: けんきゅう\nMeaning: research, study, investigation"
+        },
+        {
+          "content": "開発",
+          "answer": "kaihatsu",
+          "notes": "Hiragana: かいはつ\nMeaning: development, exploitation (of resources)"
+        },
+        {
+          "content": "発明",
+          "answer": "hatsumei",
+          "notes": "Hiragana: はつめい\nMeaning: invention"
+        },
+        {
+          "content": "宇宙",
+          "answer": "uchuu",
+          "notes": "Hiragana: うちゅう\nMeaning: universe, cosmos, space"
+        },
+        {
+          "content": "人工知能",
+          "answer": "jinkou chinou",
+          "notes": "Hiragana: じんこうちのう\nMeaning: artificial intelligence, AI"
+        },
+        {
+          "content": "情報",
+          "answer": "jouhou",
+          "notes": "Hiragana: じょうほう\nMeaning: information, news, report"
+        },
+        {
+          "content": "通信",
+          "answer": "tsuushin",
+          "notes": "Hiragana: つうしん\nMeaning: correspondence, communication, transmission"
+        },
+        {
+          "content": "電波",
+          "answer": "denpa",
+          "notes": "Hiragana: でんぱ\nMeaning: radio wave, reception, signal"
+        },
+        {
+          "content": "機械",
+          "answer": "kikai",
+          "notes": "Hiragana: きかい\nMeaning: machine, mechanism"
+        },
+        {
+          "content": "電子",
+          "answer": "denshi",
+          "notes": "Hiragana: でんし\nMeaning: electron"
+        },
+        {
+          "content": "化学",
+          "answer": "kagaku",
+          "notes": "Hiragana: かがく\nMeaning: chemistry"
+        },
+        {
+          "content": "物理",
+          "answer": "butsuri",
+          "notes": "Hiragana: ぶつり\nMeaning: laws of nature, physical laws"
+        },
+        {
+          "content": "生物",
+          "answer": "seibutsu",
+          "notes": "Hiragana: せいぶつ\nMeaning: living thing, organism, creature"
+        },
+        {
+          "content": "地球",
+          "answer": "chikyuu",
+          "notes": "Hiragana: ちきゅう\nMeaning: Earth, the globe"
+        },
+        {
+          "content": "環境",
+          "answer": "kankyou",
+          "notes": "Hiragana: かんきょう\nMeaning: environment, surroundings, circumstances"
+        },
+        {
+          "content": "エネルギー",
+          "answer": "enerugii",
+          "notes": "Hiragana: エネルギー\nMeaning: energy"
+        },
+        {
+          "content": "電力",
+          "answer": "denryoku",
+          "notes": "Hiragana: でんりょく\nMeaning: electric power"
+        },
+        {
+          "content": "測定",
+          "answer": "sokutei",
+          "notes": "Hiragana: そくてい\nMeaning: measurement"
+        }
+      ]
+    },
+    {
+      "name": "N2 Kanji Practice",
+      "prompts": [
+        {
+          "content": "議",
+          "answer": "gi",
+          "notes": "Hiragana: ぎ\nMeaning: discussion, deliberation"
+        },
+        {
+          "content": "増",
+          "answer": "zou",
+          "notes": "Hiragana: ぞう\nMeaning: increase"
+        },
+        {
+          "content": "減",
+          "answer": "gen",
+          "notes": "Hiragana: げん\nMeaning: reduction, decrease"
+        },
+        {
+          "content": "税",
+          "answer": "zei",
+          "notes": "Hiragana: ぜい\nMeaning: tax"
+        },
+        {
+          "content": "率",
+          "answer": "ritsu",
+          "notes": "Hiragana: りつ\nMeaning: rate, ratio, proportion"
+        },
+        {
+          "content": "輸",
+          "answer": "yu",
+          "notes": "Hiragana: ゆにゅう\nMeaning: import, importation, introduction"
+        },
+        {
+          "content": "際",
+          "answer": "sai",
+          "notes": "Hiragana: さい\nMeaning: occasion, time, circumstances"
+        },
+        {
+          "content": "務",
+          "answer": "mu",
+          "notes": "Hiragana: つとめる\nMeaning: to work (for), to be employed (at), to serve (in)"
+        },
+        {
+          "content": "統",
+          "answer": "tou",
+          "notes": "Hiragana: とういつ\nMeaning: unity, consolidation, uniformity"
+        },
+        {
+          "content": "領",
+          "answer": "ryou",
+          "notes": "Hiragana: えり\nMeaning: collar, lapel, neckband"
+        },
+        {
+          "content": "資",
+          "answer": "shi",
+          "notes": "Hiragana: し\nMeaning: funds, capital"
+        },
+        {
+          "content": "政",
+          "answer": "sei",
+          "notes": "Hiragana: まつりごと\nMeaning: rule, government, administration"
+        },
+        {
+          "content": "編",
+          "answer": "hen",
+          "notes": "Hiragana: へん\nMeaning: compilation (of a text), editing"
+        },
+        {
+          "content": "録",
+          "answer": "roku",
+          "notes": "Hiragana: ろく\nMeaning: record, transcript"
+        },
+        {
+          "content": "版",
+          "answer": "han",
+          "notes": "Hiragana: はん\nMeaning: edition, version, printing"
+        },
+        {
+          "content": "設",
+          "answer": "setsu",
+          "notes": "Hiragana: せってい\nMeaning: establishment, creation, posing (a problem)"
+        },
+        {
+          "content": "報",
+          "answer": "hou",
+          "notes": "Hiragana: ほう\nMeaning: information, news, report"
+        },
+        {
+          "content": "価",
+          "answer": "ka",
+          "notes": "Hiragana: あたい\nMeaning: price, cost"
+        },
+        {
+          "content": "証",
+          "answer": "shou",
+          "notes": "Hiragana: あかし\nMeaning: proof, evidence, sign"
+        },
+        {
+          "content": "責",
+          "answer": "seki",
+          "notes": "Hiragana: せき\nMeaning: responsibility, duty, obligation"
+        }
+      ]
+    },
+    {
+      "name": "N1 - Literature & Politics",
+      "prompts": [
+        {
+          "content": "憲法",
+          "answer": "kenpou",
+          "notes": "Hiragana: けんぽう\nMeaning: constitution"
+        },
+        {
+          "content": "哲学",
+          "answer": "tetsugaku",
+          "notes": "Hiragana: てつがく\nMeaning: philosophy"
+        },
+        {
+          "content": "環境",
+          "answer": "kankyou",
+          "notes": "Hiragana: かんきょう\nMeaning: environment, surroundings, circumstances"
+        },
+        {
+          "content": "倫理",
+          "answer": "rinri",
+          "notes": "Hiragana: りんり\nMeaning: ethics, morals"
+        },
+        {
+          "content": "抽象",
+          "answer": "chuushou",
+          "notes": "Hiragana: ちゅうしょう\nMeaning: abstraction"
+        },
+        {
+          "content": "文学",
+          "answer": "bungaku",
+          "notes": "Hiragana: ぶんがく\nMeaning: literature"
+        },
+        {
+          "content": "詩",
+          "answer": "shi",
+          "notes": "Hiragana: し\nMeaning: poem, poetry, verse"
+        },
+        {
+          "content": "政治",
+          "answer": "seiji",
+          "notes": "Hiragana: せいじ\nMeaning: politics, government"
+        },
+        {
+          "content": "革命",
+          "answer": "kakumei",
+          "notes": "Hiragana: かくめい\nMeaning: revolution"
+        },
+        {
+          "content": "思想",
+          "answer": "shisou",
+          "notes": "Hiragana: しそう\nMeaning: thought, idea, ideology"
+        },
+        {
+          "content": "法律",
+          "answer": "houritsu",
+          "notes": "Hiragana: ほうりつ\nMeaning: law"
+        },
+        {
+          "content": "民主主義",
+          "answer": "minshu shugi",
+          "notes": "Hiragana: みんしゅしゅぎ\nMeaning: democracy"
+        },
+        {
+          "content": "権利",
+          "answer": "kenri",
+          "notes": "Hiragana: けんり\nMeaning: right, privilege"
+        },
+        {
+          "content": "責任",
+          "answer": "sekinin",
+          "notes": "Hiragana: せきにん\nMeaning: duty, responsibility (incl. supervision of staff)"
+        },
+        {
+          "content": "国会",
+          "answer": "kokkai",
+          "notes": "Hiragana: こっかい\nMeaning: National Diet, legislative assembly of Japan (1947-)"
+        },
+        {
+          "content": "条約",
+          "answer": "jouyaku",
+          "notes": "Hiragana: じょうやく\nMeaning: treaty, pact, convention"
+        },
+        {
+          "content": "理論",
+          "answer": "riron",
+          "notes": "Hiragana: りろん\nMeaning: theory"
+        },
+        {
+          "content": "批判",
+          "answer": "hihan",
+          "notes": "Hiragana: ひはん\nMeaning: criticism, judgement, judgment"
+        },
+        {
+          "content": "政策",
+          "answer": "seisaku",
+          "notes": "Hiragana: せいさく\nMeaning: political measures, policy"
+        },
+        {
+          "content": "社会",
+          "answer": "shakai",
+          "notes": "Hiragana: しゃかい\nMeaning: society, public, community"
+        }
+      ]
+    },
+    {
+      "name": "N1 - Philosophy & Advanced Science",
+      "prompts": [
+        {
+          "content": "量子論",
+          "answer": "ryoushiron",
+          "notes": "Hiragana: りょうしろん\nMeaning: quantum theory"
+        },
+        {
+          "content": "相対性理論",
+          "answer": "soutaisei riron",
+          "notes": "Hiragana: そうたいせいりろん\nMeaning: theory of relativity"
+        },
+        {
+          "content": "形而上学",
+          "answer": "keijijougaku",
+          "notes": "Hiragana: けいじじょうがく\nMeaning: metaphysics"
+        },
+        {
+          "content": "認識論",
+          "answer": "ninshikiron",
+          "notes": "Hiragana: にんしきろん\nMeaning: epistemology"
+        },
+        {
+          "content": "生態系",
+          "answer": "seitaikei",
+          "notes": "Hiragana: せいたいけい\nMeaning: ecosystem"
+        },
+        {
+          "content": "遺伝子",
+          "answer": "idenshi",
+          "notes": "Hiragana: いでんし\nMeaning: gene"
+        },
+        {
+          "content": "複雑系",
+          "answer": "fukuzatsukei",
+          "notes": "Hiragana: ふくざつけい\nMeaning: complex system"
+        },
+        {
+          "content": "統計学",
+          "answer": "toukeigaku",
+          "notes": "Hiragana: とうけいがく\nMeaning: (study of) statistics"
+        },
+        {
+          "content": "微積分",
+          "answer": "biseibun",
+          "notes": "Hiragana: びせきぶん\nMeaning: infinitesimal calculus, (differential and integral) calculus"
+        },
+        {
+          "content": "暗号",
+          "answer": "angou",
+          "notes": "Hiragana: あんごう\nMeaning: code, password, cipher"
+        },
+        {
+          "content": "電磁波",
+          "answer": "denjiha",
+          "notes": "Hiragana: でんじは\nMeaning: electromagnetic wave"
+        },
+        {
+          "content": "宇宙論",
+          "answer": "uchuuron",
+          "notes": "Hiragana: うちゅうろん\nMeaning: cosmology"
+        },
+        {
+          "content": "脳科学",
+          "answer": "noukagaku",
+          "notes": "Hiragana: のうかがく\nMeaning: brain science"
+        },
+        {
+          "content": "神経網",
+          "answer": "shinkeimou",
+          "notes": "Hiragana: しんけいもう\nMeaning: (biological) neural network, neural circuit, nerve network"
+        },
+        {
+          "content": "解析",
+          "answer": "kaiseki",
+          "notes": "Hiragana: かいせき\nMeaning: analysis, analytical study"
+        },
+        {
+          "content": "仮説",
+          "answer": "kasetsu",
+          "notes": "Hiragana: かせつ\nMeaning: hypothesis, supposition, assumption"
+        },
+        {
+          "content": "検証",
+          "answer": "kenshou",
+          "notes": "Hiragana: けんしょう\nMeaning: verification, inspection"
+        },
+        {
+          "content": "証拠",
+          "answer": "shouko",
+          "notes": "Hiragana: しょうこ\nMeaning: evidence, proof"
+        },
+        {
+          "content": "推論",
+          "answer": "suiron",
+          "notes": "Hiragana: すいろん\nMeaning: inference, deduction, induction"
+        },
+        {
+          "content": "実験",
+          "answer": "jikken",
+          "notes": "Hiragana: じっけん\nMeaning: experiment, experimentation"
+        }
+      ]
+    },
+    {
+      "name": "N1 Kanji Practice",
+      "prompts": [
+        {
+          "content": "憂",
+          "answer": "uu",
+          "notes": "Hiragana: ゆううつ\nMeaning: depression, melancholy, dejection"
+        },
+        {
+          "content": "懸",
+          "answer": "ken",
+          "notes": "Hiragana: かけ\nMeaning: credit"
+        },
+        {
+          "content": "礎",
+          "answer": "so",
+          "notes": "Hiragana: いしずえ\nMeaning: foundation stone, cornerstone"
+        },
+        {
+          "content": "繊",
+          "answer": "sen",
+          "notes": "Hiragana: せん\nMeaning: daikon julienne, julienned daikon"
+        },
+        {
+          "content": "朴",
+          "answer": "boku",
+          "notes": "Hiragana: えのき\nMeaning: Japanese hackberry (Celtis sinensis var. japonica), Chinese nettle tree"
+        },
+        {
+          "content": "瞬",
+          "answer": "shun",
+          "notes": "Hiragana: しゅんかん\nMeaning: moment, instant, second"
+        },
+        {
+          "content": "穫",
+          "answer": "kaku",
+          "notes": "Hiragana: とりいれる\nMeaning: to take in, to gather in"
+        },
+        {
+          "content": "覆",
+          "answer": "fuku",
+          "notes": "Hiragana: ふく\nMeaning: concealment (of one's vices), veil, cover"
+        },
+        {
+          "content": "謁",
+          "answer": "etsu",
+          "notes": "Hiragana: えつ\nMeaning: audience (with a superior, e.g. nobility)"
+        },
+        {
+          "content": "嚇",
+          "answer": "kaku",
+          "notes": "Hiragana: おどす\nMeaning: to threaten, to menace, to frighten (into doing)"
+        },
+        {
+          "content": "曖",
+          "answer": "ai",
+          "notes": "Hiragana: あいまい\nMeaning: vague, ambiguous, unclear"
+        },
+        {
+          "content": "憶",
+          "answer": "oku",
+          "notes": "Hiragana: おぼえる\nMeaning: to memorize, to memorise, to commit to memory"
+        },
+        {
+          "content": "譲",
+          "answer": "jou",
+          "notes": "Hiragana: ゆずる\nMeaning: to hand over, to transfer, to turn over"
+        },
+        {
+          "content": "轄",
+          "answer": "katsu",
+          "notes": "Hiragana: くさび\nMeaning: wedge, chock, linchpin"
+        },
+        {
+          "content": "礁",
+          "answer": "shou",
+          "notes": "Hiragana: しょう\nMeaning: reef"
+        },
+        {
+          "content": "藻",
+          "answer": "sou",
+          "notes": "Hiragana: も\nMeaning: algae, waterweed, seaweed"
+        },
+        {
+          "content": "繭",
+          "answer": "ken",
+          "notes": "Hiragana: まゆ\nMeaning: cocoon"
+        },
+        {
+          "content": "襲",
+          "answer": "shuu",
+          "notes": "Hiragana: かさね\nMeaning: pile, heap, layers (e.g. of clothing)"
+        },
+        {
+          "content": "顕",
+          "answer": "ken",
+          "notes": "Hiragana: けん\nMeaning: exposure, clarity"
+        },
+        {
+          "content": "騰",
+          "answer": "tou",
+          "notes": "Hiragana: あげる\nMeaning: to raise, to elevate"
+        }
+      ]
+    }
+  ]
+}

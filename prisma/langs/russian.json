@@ -1,0 +1,352 @@
+{
+  "name": "Russian",
+  "units": [
+    {
+      "name": "Greetings",
+      "prompts": [
+        {
+          "content": "Привет",
+          "answer": "privet"
+        },
+        {
+          "content": "Здравствуйте",
+          "answer": "zdravstvuyte"
+        },
+        {
+          "content": "Спасибо",
+          "answer": "spasibo"
+        },
+        {
+          "content": "Пожалуйста",
+          "answer": "pozhaluysta"
+        },
+        {
+          "content": "До свидания",
+          "answer": "do svidaniya"
+        },
+        {
+          "content": "Извините",
+          "answer": "izvinite"
+        },
+        {
+          "content": "Хорошо",
+          "answer": "khorosho"
+        },
+        {
+          "content": "Плохо",
+          "answer": "plokho"
+        },
+        {
+          "content": "Да",
+          "answer": "da"
+        },
+        {
+          "content": "Нет",
+          "answer": "net"
+        }
+      ]
+    },
+    {
+      "name": "Numbers 1-10",
+      "prompts": [
+        {
+          "content": "один",
+          "answer": "odin"
+        },
+        {
+          "content": "два",
+          "answer": "dva"
+        },
+        {
+          "content": "три",
+          "answer": "tri"
+        },
+        {
+          "content": "четыре",
+          "answer": "chetyre"
+        },
+        {
+          "content": "пять",
+          "answer": "pyat"
+        },
+        {
+          "content": "шесть",
+          "answer": "shest"
+        },
+        {
+          "content": "семь",
+          "answer": "sem"
+        },
+        {
+          "content": "восемь",
+          "answer": "vosem"
+        },
+        {
+          "content": "девять",
+          "answer": "devyat"
+        },
+        {
+          "content": "десять",
+          "answer": "desyat"
+        }
+      ]
+    },
+    {
+      "name": "Food & Drink",
+      "prompts": [
+        {
+          "content": "вода",
+          "answer": "voda"
+        },
+        {
+          "content": "чай",
+          "answer": "chai"
+        },
+        {
+          "content": "кофе",
+          "answer": "kofe"
+        },
+        {
+          "content": "рис",
+          "answer": "ris"
+        },
+        {
+          "content": "лапша",
+          "answer": "lapsha"
+        },
+        {
+          "content": "хлеб",
+          "answer": "khleb"
+        },
+        {
+          "content": "молоко",
+          "answer": "moloko"
+        },
+        {
+          "content": "сок",
+          "answer": "sok"
+        },
+        {
+          "content": "пиво",
+          "answer": "pivo"
+        },
+        {
+          "content": "вино",
+          "answer": "vino"
+        },
+        {
+          "content": "яблоко",
+          "answer": "yabloko"
+        },
+        {
+          "content": "мясо",
+          "answer": "myaso"
+        }
+      ]
+    },
+    {
+      "name": "Common Verbs",
+      "prompts": [
+        {
+          "content": "идти",
+          "answer": "idti"
+        },
+        {
+          "content": "делать",
+          "answer": "delat"
+        },
+        {
+          "content": "хотеть",
+          "answer": "khotet"
+        },
+        {
+          "content": "знать",
+          "answer": "znat"
+        },
+        {
+          "content": "понимать",
+          "answer": "ponimat"
+        },
+        {
+          "content": "говорить",
+          "answer": "govorit"
+        },
+        {
+          "content": "читать",
+          "answer": "chitat"
+        },
+        {
+          "content": "писать",
+          "answer": "pisat"
+        },
+        {
+          "content": "есть",
+          "answer": "yest"
+        },
+        {
+          "content": "пить",
+          "answer": "pit"
+        },
+        {
+          "content": "работать",
+          "answer": "rabotat"
+        },
+        {
+          "content": "жить",
+          "answer": "zhit"
+        }
+      ]
+    },
+    {
+      "name": "Family",
+      "prompts": [
+        {
+          "content": "мама",
+          "answer": "mama"
+        },
+        {
+          "content": "папа",
+          "answer": "papa"
+        },
+        {
+          "content": "брат",
+          "answer": "brat"
+        },
+        {
+          "content": "сестра",
+          "answer": "sestra"
+        },
+        {
+          "content": "сын",
+          "answer": "syn"
+        },
+        {
+          "content": "дочь",
+          "answer": "doch"
+        },
+        {
+          "content": "семья",
+          "answer": "semya"
+        },
+        {
+          "content": "друг",
+          "answer": "drug"
+        },
+        {
+          "content": "подруга",
+          "answer": "podruga"
+        },
+        {
+          "content": "муж",
+          "answer": "muzh"
+        },
+        {
+          "content": "жена",
+          "answer": "zhena"
+        },
+        {
+          "content": "родители",
+          "answer": "roditeli"
+        }
+      ]
+    },
+    {
+      "name": "Days & Time",
+      "prompts": [
+        {
+          "content": "понедельник",
+          "answer": "ponedelnik"
+        },
+        {
+          "content": "вторник",
+          "answer": "vtornik"
+        },
+        {
+          "content": "среда",
+          "answer": "sreda"
+        },
+        {
+          "content": "четверг",
+          "answer": "chetverg"
+        },
+        {
+          "content": "пятница",
+          "answer": "pyatnitsa"
+        },
+        {
+          "content": "суббота",
+          "answer": "subbota"
+        },
+        {
+          "content": "воскресенье",
+          "answer": "voskresene"
+        },
+        {
+          "content": "сегодня",
+          "answer": "segodnya"
+        },
+        {
+          "content": "завтра",
+          "answer": "zavtra"
+        },
+        {
+          "content": "вчера",
+          "answer": "vchera"
+        }
+      ]
+    },
+    {
+      "name": "Places",
+      "prompts": [
+        {
+          "content": "школа",
+          "answer": "shkola"
+        },
+        {
+          "content": "дом",
+          "answer": "dom"
+        },
+        {
+          "content": "магазин",
+          "answer": "magazin"
+        },
+        {
+          "content": "больница",
+          "answer": "bolnitsa"
+        },
+        {
+          "content": "станция",
+          "answer": "stantsiya"
+        },
+        {
+          "content": "парк",
+          "answer": "park"
+        },
+        {
+          "content": "компания",
+          "answer": "kompaniya"
+        },
+        {
+          "content": "банк",
+          "answer": "bank"
+        },
+        {
+          "content": "библиотека",
+          "answer": "biblioteka"
+        },
+        {
+          "content": "аэропорт",
+          "answer": "aeroport"
+        },
+        {
+          "content": "рынок",
+          "answer": "rynok"
+        },
+        {
+          "content": "ресторан",
+          "answer": "restoran"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,352 @@
+{
+  "name": "Korean",
+  "units": [
+    {
+      "name": "Greetings",
+      "prompts": [
+        {
+          "content": "안녕하세요",
+          "answer": "annyeonghaseyo"
+        },
+        {
+          "content": "안녕히 계세요",
+          "answer": "annyeonghi gyeseyo"
+        },
+        {
+          "content": "안녕히 가세요",
+          "answer": "annyeonghi gaseyo"
+        },
+        {
+          "content": "감사합니다",
+          "answer": "gamsahamnida"
+        },
+        {
+          "content": "죄송합니다",
+          "answer": "joesonghamnida"
+        },
+        {
+          "content": "제발",
+          "answer": "jebal"
+        },
+        {
+          "content": "네",
+          "answer": "ne"
+        },
+        {
+          "content": "아니요",
+          "answer": "aniyo"
+        },
+        {
+          "content": "안녕",
+          "answer": "annyeong"
+        },
+        {
+          "content": "잘 부탁합니다",
+          "answer": "jal butakhamnida"
+        }
+      ]
+    },
+    {
+      "name": "Numbers 1-10 (Sino)",
+      "prompts": [
+        {
+          "content": "일",
+          "answer": "il"
+        },
+        {
+          "content": "이",
+          "answer": "i"
+        },
+        {
+          "content": "삼",
+          "answer": "sam"
+        },
+        {
+          "content": "사",
+          "answer": "sa"
+        },
+        {
+          "content": "오",
+          "answer": "o"
+        },
+        {
+          "content": "육",
+          "answer": "yuk"
+        },
+        {
+          "content": "칠",
+          "answer": "chil"
+        },
+        {
+          "content": "팔",
+          "answer": "pal"
+        },
+        {
+          "content": "구",
+          "answer": "gu"
+        },
+        {
+          "content": "십",
+          "answer": "sip"
+        }
+      ]
+    },
+    {
+      "name": "Food & Drink",
+      "prompts": [
+        {
+          "content": "물",
+          "answer": "mul"
+        },
+        {
+          "content": "차",
+          "answer": "cha"
+        },
+        {
+          "content": "커피",
+          "answer": "keopi"
+        },
+        {
+          "content": "밥",
+          "answer": "bap"
+        },
+        {
+          "content": "면",
+          "answer": "myeon"
+        },
+        {
+          "content": "빵",
+          "answer": "ppang"
+        },
+        {
+          "content": "우유",
+          "answer": "uyu"
+        },
+        {
+          "content": "주스",
+          "answer": "juseu"
+        },
+        {
+          "content": "맥주",
+          "answer": "maekju"
+        },
+        {
+          "content": "와인",
+          "answer": "wain"
+        },
+        {
+          "content": "사과",
+          "answer": "sagwa"
+        },
+        {
+          "content": "고기",
+          "answer": "gogi"
+        }
+      ]
+    },
+    {
+      "name": "Common Verbs",
+      "prompts": [
+        {
+          "content": "가다",
+          "answer": "gada"
+        },
+        {
+          "content": "오다",
+          "answer": "oda"
+        },
+        {
+          "content": "먹다",
+          "answer": "meokda"
+        },
+        {
+          "content": "마시다",
+          "answer": "masida"
+        },
+        {
+          "content": "보다",
+          "answer": "boda"
+        },
+        {
+          "content": "읽다",
+          "answer": "ikda"
+        },
+        {
+          "content": "쓰다",
+          "answer": "sseuda"
+        },
+        {
+          "content": "하다",
+          "answer": "hada"
+        },
+        {
+          "content": "있다",
+          "answer": "itda"
+        },
+        {
+          "content": "없다",
+          "answer": "eopda"
+        },
+        {
+          "content": "걷다",
+          "answer": "geotda"
+        },
+        {
+          "content": "달리다",
+          "answer": "dallida"
+        }
+      ]
+    },
+    {
+      "name": "Family",
+      "prompts": [
+        {
+          "content": "어머니",
+          "answer": "eomeoni"
+        },
+        {
+          "content": "아버지",
+          "answer": "abeoji"
+        },
+        {
+          "content": "형",
+          "answer": "hyeong"
+        },
+        {
+          "content": "누나",
+          "answer": "nuna"
+        },
+        {
+          "content": "오빠",
+          "answer": "oppa"
+        },
+        {
+          "content": "언니",
+          "answer": "eonni"
+        },
+        {
+          "content": "동생",
+          "answer": "dongsaeng"
+        },
+        {
+          "content": "아들",
+          "answer": "adeul"
+        },
+        {
+          "content": "딸",
+          "answer": "ttal"
+        },
+        {
+          "content": "가족",
+          "answer": "gajok"
+        },
+        {
+          "content": "친구",
+          "answer": "chingu"
+        },
+        {
+          "content": "남편",
+          "answer": "nampyeon"
+        }
+      ]
+    },
+    {
+      "name": "Days & Time",
+      "prompts": [
+        {
+          "content": "월요일",
+          "answer": "woryoil"
+        },
+        {
+          "content": "화요일",
+          "answer": "hwayoil"
+        },
+        {
+          "content": "수요일",
+          "answer": "suyoil"
+        },
+        {
+          "content": "목요일",
+          "answer": "mogyoil"
+        },
+        {
+          "content": "금요일",
+          "answer": "geumyoil"
+        },
+        {
+          "content": "토요일",
+          "answer": "toyoil"
+        },
+        {
+          "content": "일요일",
+          "answer": "iryoil"
+        },
+        {
+          "content": "오늘",
+          "answer": "oneul"
+        },
+        {
+          "content": "내일",
+          "answer": "naeil"
+        },
+        {
+          "content": "어제",
+          "answer": "eoje"
+        }
+      ]
+    },
+    {
+      "name": "Places",
+      "prompts": [
+        {
+          "content": "학교",
+          "answer": "hakgyo"
+        },
+        {
+          "content": "집",
+          "answer": "jib"
+        },
+        {
+          "content": "가게",
+          "answer": "gage"
+        },
+        {
+          "content": "병원",
+          "answer": "byeongwon"
+        },
+        {
+          "content": "역",
+          "answer": "yeok"
+        },
+        {
+          "content": "공원",
+          "answer": "gongwon"
+        },
+        {
+          "content": "회사",
+          "answer": "hoesa"
+        },
+        {
+          "content": "은행",
+          "answer": "eunhaeng"
+        },
+        {
+          "content": "도서관",
+          "answer": "doseogwan"
+        },
+        {
+          "content": "공항",
+          "answer": "gonghang"
+        },
+        {
+          "content": "시장",
+          "answer": "sijang"
+        },
+        {
+          "content": "레스토랑",
+          "answer": "reseutorang"
+        }
+      ]
+    }
+  ]
+}

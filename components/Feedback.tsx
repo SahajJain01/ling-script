@@ -1,5 +1,7 @@
 'use client';
 
+import type { ReactNode } from 'react';
+
 export default function Feedback({
   open,
   type,
@@ -13,13 +15,14 @@ export default function Feedback({
   open: boolean;
   type: 'success' | 'error' | 'info';
   title: string;
-  message?: string;
+  message?: ReactNode;
   label?: string;
   onClose?: () => void;
   secondaryLabel?: string;
   onSecondary?: () => void;
 }) {
   if (!open) return null;
+  const hasMessage = message != null;
   return (
     <div className="overlay" role="dialog" aria-modal="true" aria-labelledby="feedback-title">
       <div className={`popup popup--${type}`}>
@@ -39,7 +42,7 @@ export default function Feedback({
           )}
         </div>
         <h3 id="feedback-title" className="popup__title">{title}</h3>
-        <p className="popup__desc" aria-hidden={!message}>{message || String.fromCharCode(160)}</p>
+        <div className="popup__desc" aria-hidden={!hasMessage}>{hasMessage ? message : <span aria-hidden="true">&nbsp;</span>}</div>
         <div className={`actions ${secondaryLabel ? '' : 'actions--single'}`}>
           <button className="button button--primary button--lg" onClick={onClose}>{label}</button>
           {secondaryLabel ? (
@@ -50,3 +53,7 @@ export default function Feedback({
     </div>
   );
 }
+
+
+
+
