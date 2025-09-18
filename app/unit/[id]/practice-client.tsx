@@ -209,7 +209,25 @@ export default function PracticeClient({ unitId }: { unitId: number }) {
     }
   }, [reloadPrompts, newAnswer, newContent, unitId, toast]);
 
-  if (loading) return <div className="screen"><div className="center-panel"><p className="muted">Loading prompts...</p></div></div>;
+  if (loading) {
+    return (
+      <div className="screen" aria-busy>
+        <div className="center-panel">
+          <div className="loading-placeholder" aria-label="Loading prompts">
+            <div className="skeleton skeleton--prompt" />
+            <div className="skeleton skeleton--line" />
+            <div className="skeleton skeleton--line skeleton--short" />
+          </div>
+        </div>
+        <div className="bottom-bar">
+          <div className="bottom-inner">
+            <div className="skeleton skeleton--input" />
+            <div className="skeleton skeleton--button" />
+          </div>
+        </div>
+      </div>
+    );
+  }
   if (error) return <div className="screen"><div className="center-panel"><p className="muted" style={{ color: 'crimson' }}>{error}</p></div></div>;
   if (prompts.length === 0) {
     return (
