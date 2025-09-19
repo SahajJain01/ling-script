@@ -752,12 +752,12 @@
         {
           "content": "読",
           "answer": "yomu",
-          "notes": "Hiragana: どくしょ\nMeaning: reading (books)"
+          "notes": "Hiragana: よむ\nMeaning: to read"
         },
         {
           "content": "書",
           "answer": "kaku",
-          "notes": "Hiragana: ふみ\nMeaning: letter, note, mail"
+          "notes": "Hiragana: かく\nMeaning: to write"
         },
         {
           "content": "聞",
@@ -777,12 +777,12 @@
         {
           "content": "長",
           "answer": "nagai",
-          "notes": "Hiragana: たけ\nMeaning: height, stature"
+          "notes": "Hiragana: ながい\nMeaning: long, lengthy"
         },
         {
           "content": "新",
           "answer": "atarashii",
-          "notes": "Hiragana: しん\nMeaning: new, neo-"
+          "notes": "Hiragana: あたらしい\nMeaning: new"
         },
         {
           "content": "間",
@@ -797,7 +797,7 @@
         {
           "content": "曜",
           "answer": "you",
-          "notes": "Hiragana: ようび\nMeaning: day of the week"
+          "notes": "Hiragana: よう\nMeaning: day of the week"
         },
         {
           "content": "館",
@@ -817,7 +817,7 @@
         {
           "content": "験",
           "answer": "ken",
-          "notes": "Hiragana: ためし\nMeaning: trial, test"
+          "notes": "Hiragana: けん\nMeaning: test, examination"
         },
         {
           "content": "旅",
@@ -832,12 +832,12 @@
         {
           "content": "配",
           "answer": "hai",
-          "notes": "Hiragana: はいたつ\nMeaning: delivery"
+          "notes": "Hiragana: はい\nMeaning: to distribute, to deliver"
         },
         {
           "content": "重",
           "answer": "juu",
-          "notes": "Hiragana: じゅう\nMeaning: jūbako, multi-tiered food box"
+          "notes": "Hiragana: じゅう\nMeaning: heavy, important"
         }
       ]
     },
